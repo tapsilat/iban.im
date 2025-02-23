@@ -1,5 +1,7 @@
 .env
 .docker_build/
+docker-compose.override.yml
+tmp/
 .theia/
 vendor/
 config/database.yml

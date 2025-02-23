@@ -3,63 +3,62 @@ package config
 import (
 	"errors"
 	"fmt"
+	"log"
+	"os"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/monopayments/iban.im/model"
 	"github.com/qor/validations"
-
-	// _ "github.com/jinzhu/gorm/dialects/sqlite" TODO - disabled for compile time issue
-	"os"
-	"time"
 )
 
-// global DB variable => TODO repository pattern
 var DB *gorm.DB
 
-func init() {
+func InitDB() {
 	var err error
-	if Config.App.Env == "gitpod" && Config.Db.Adapter == "postgres" {
-		if err = os.Unsetenv("PGHOSTADDR"); err != nil {
-			panic(err)
-		}
+
+	// Config yerine doğrudan ENV değişkenlerini alıyoruz
+	adapter := os.Getenv("DB_ADAPTER") // "postgres" veya "mysql"
+	if adapter == "" {
+		adapter = "postgres" // Varsayılan olarak PostgreSQL kullan
 	}
 
 	var connStr string
-	adapter := Config.Db.Adapter
 	if adapter == "mysql" {
-		connStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local", Config.Db.User, Config.Db.Password, Config.Db.Host, Config.Db.Port, Config.Db.Name)
+		connStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True&loc=Local",
+			os.Getenv("DB_USER"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
+			os.Getenv("DB_NAME"),
+		)
 	} else if adapter == "postgres" {
-		connStr = fmt.Sprintf("postgres://%v:%v@%v/%v?sslmode=disable", Config.Db.User, Config.Db.Password, Config.Db.Host, Config.Db.Name)
-	} else if adapter == "sqlite3" || adapter == "sqlite" {
-		connStr = Config.Db.Name
+		connStr = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+			os.Getenv("DB_USER"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
+			os.Getenv("DB_NAME"),
+		)
 	} else {
-		panic(errors.New("your database is not supported"))
+		panic(errors.New("unsupported database adapter"))
 	}
 
 	DB, err = gorm.Open(adapter, connStr)
 	if err != nil {
-		panic(err)
+		log.Fatal("Database connection failed:", err)
 	}
+
 	validations.RegisterCallbacks(DB)
-	DB.LogMode(Config.App.Debug)
+	DB.LogMode(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(30)
 	DB.DB().SetConnMaxLifetime(time.Second * 60)
 
+	// Otomatik migration
 	DB.AutoMigrate(&model.User{}, &model.Iban{}, &model.Group{})
 
-	// TODO ping control for mysql
-	if adapter == "mysql" {
-		go checkPing()
-	}
-}
-
-func checkPing() {
-	for {
-		time.Sleep(time.Second * 15)
-		DB.DB().Ping()
-	}
+	log.Println("Database connected successfully!")
 }

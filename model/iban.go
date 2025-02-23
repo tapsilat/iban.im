@@ -2,26 +2,27 @@ package model
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
 	"strings"
 	"time"
+
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Iban : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
 type Iban struct {
-	IbanID    uint `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
-	Text      string `gorm:"type:varchar(100);not null"`
-	Description      string
-	Password  string
-	Handle    string `gorm:"type:varchar(20);not null"`
-	Active    bool
-	IsPrivate bool
-	OwnerID   uint
-	OwnerType string
+	IbanID      uint `gorm:"primary_key"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   *time.Time `sql:"index"`
+	Text        string     `gorm:"type:varchar(100);not null"`
+	Description string
+	Password    string
+	Handle      string `gorm:"type:varchar(20);not null"`
+	Active      bool
+	IsPrivate   bool
+	OwnerID     uint
+	OwnerType   string
 }
 
 // HashPassword : hashing the password
@@ -39,17 +40,13 @@ func (iban *Iban) HashPassword() {
 func (iban *Iban) ComparePassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(iban.Password), []byte(password))
 
-	if err != nil {
-		return false
-	}
-
-	return true
+	return err == nil
 }
 
 // Check Handle before create or update = must be add as index to db
 func (iban *Iban) CheckHandle(tx *gorm.DB) (exist bool) {
 	var ibans []Iban
-	tx.Where("owner_id = ? AND handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
+	tx.Where("owner_id = ? AND handle = ?", iban.OwnerID, iban.Handle).Find(&ibans)
 	for _, tmp := range ibans {
 		if iban.Handle == tmp.Handle && iban.IbanID != tmp.IbanID {
 			exist = true
@@ -59,19 +56,19 @@ func (iban *Iban) CheckHandle(tx *gorm.DB) (exist bool) {
 }
 
 // BeforeSave Callback
-func (iban  *Iban) BeforeSave(tx *gorm.DB) (err error) {
+func (iban *Iban) BeforeSave(tx *gorm.DB) (err error) {
 	if iban.CheckHandle(tx) {
 		err = fmt.Errorf("handle already exist")
 	}
 	return
 }
 
-func (iban *Iban) Validate(db *gorm.DB)  {
+func (iban *Iban) Validate(db *gorm.DB) {
 	if strings.TrimSpace(iban.Text) == "" {
 		db.AddError(fmt.Errorf("you have to provide IBAN"))
-	}else if strings.TrimSpace(iban.Handle) == "" {
+	} else if strings.TrimSpace(iban.Handle) == "" {
 		db.AddError(fmt.Errorf("you have to provide handle"))
-	}else if iban.IsPrivate && strings.TrimSpace(iban.Password) == "" {
+	} else if iban.IsPrivate && strings.TrimSpace(iban.Password) == "" {
 		db.AddError(fmt.Errorf("you have to provide password"))
 	}
 }
