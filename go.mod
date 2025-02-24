@@ -13,7 +13,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/graph-gophers/graphql-go v1.2.0
+	github.com/graph-gophers/graphql-go v1.6.0
 	github.com/jinzhu/configor v1.2.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -21,7 +21,6 @@ require (
 	github.com/mattdamon108/gqlmerge v0.2.3
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-sqlite3 v1.14.24
-	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/qor/qor v1.2.0 // indirect
 	github.com/qor/validations v0.0.0-20171228122639-f364bca61b46
 	github.com/ugorji/go v1.2.6 // indirect
