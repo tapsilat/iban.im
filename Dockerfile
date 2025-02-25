@@ -1,4 +1,4 @@
-FROM golang:1.12 as builder
+FROM golang:1.20 AS builder
 
 WORKDIR /usr/app
 
@@ -14,7 +14,7 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
-ENV PATH /root
+ENV PATH=/root:$PATH
 
 WORKDIR /root/
 
