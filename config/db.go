@@ -19,10 +19,9 @@ var DB *gorm.DB
 func InitDB() {
 	var err error
 
-	// Config yerine doğrudan ENV değişkenlerini alıyoruz
-	adapter := os.Getenv("DB_ADAPTER") // "postgres" veya "mysql"
+	adapter := os.Getenv("DB_ADAPTER")
 	if adapter == "" {
-		adapter = "postgres" // Varsayılan olarak PostgreSQL kullan
+		adapter = "postgres"
 	}
 
 	var connStr string
@@ -51,14 +50,18 @@ func InitDB() {
 		log.Fatal("Database connection failed:", err)
 	}
 
+	// Veritabanı bağlantısını kontrol etme
+	if err := DB.DB().Ping(); err != nil {
+		log.Fatalf("Error connecting to DB: %v", err)
+	} else {
+		log.Println("Successfully connected to DB")
+	}
+
 	validations.RegisterCallbacks(DB)
 	DB.LogMode(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(30)
 	DB.DB().SetConnMaxLifetime(time.Second * 60)
 
-	// Otomatik migration
 	DB.AutoMigrate(&model.User{}, &model.Iban{}, &model.Group{})
-
-	log.Println("Database connected successfully!")
 }

@@ -1,5 +1,0 @@
-smtp:
-  host: smtp.iban.im
-  port: 587
-  user: info@iban.im
-  password: xxxxxx

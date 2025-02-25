@@ -1,4 +1,0 @@
-app:
-  port: 4880
-  env:  localhost
-  debug: true
