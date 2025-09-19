@@ -12,7 +12,7 @@ require (
 	github.com/jinzhu/configor v1.2.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mattdamon108/gqlmerge v0.2.3
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/crypto v0.42.0
 )
 
 require (
@@ -33,8 +33,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
-	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/sys v0.36.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
