@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/tapsilat/iban.im/model"
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var DBOld *gorm.DB
@@ -14,11 +14,11 @@ var DBNew *gorm.DB
 
 func init() {
 	var err error
-	DBOld, err = gorm.Open("mysql", "iban_p8nPjkfKO0M:T1os3vVUiQlZeEw@/iban_pushecommerce_com?charset=utf8&parseTime=True&loc=Local")
+	DBOld, err = gorm.Open(mysql.Open("iban_p8nPjkfKO0M:T1os3vVUiQlZeEw@/iban_pushecommerce_com?charset=utf8&parseTime=True&loc=Local"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	DBNew, err = gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=ibanim password=Ahmety61+- sslmode=disable")
+	DBNew, err = gorm.Open(postgres.Open("host=localhost port=5432 user=postgres dbname=ibanim password=Ahmety61+- sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}

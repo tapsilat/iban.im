@@ -36,7 +36,9 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	defer config.DB.Close()
+	if sqlDB, err := config.DB.DB(); err == nil {
+		defer sqlDB.Close()
+	}
 
 	context.Background()
 

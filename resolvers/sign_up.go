@@ -3,6 +3,7 @@ package resolvers
 import (
 	"github.com/tapsilat/iban.im/config"
 	"github.com/tapsilat/iban.im/model"
+	"gorm.io/gorm"
 )
 
 // SignUp mutation creates user
@@ -10,9 +11,16 @@ func (r *Resolvers) SignUp(args signUpMutationArgs) (*SignUpResponse, error) {
 
 	newUser := model.User{Email: args.Email, Password: args.Password, FirstName: args.FirstName, LastName: args.LastName, Handle: args.Handle}
 
-	if !config.DB.Where("email = ? or handle = ?", args.Email, args.Handle).First(&model.User{}).RecordNotFound() {
+	var existing model.User
+	err := config.DB.Where("email = ? or handle = ?", args.Email, args.Handle).First(&existing).Error
+	if err == nil {
 		msg := "Already signed up"
 		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, nil
+	}
+	// if not found, err will be gorm.ErrRecordNotFound; any other error should be returned
+	if err != nil && err != gorm.ErrRecordNotFound {
+		msg := "lookup error"
+		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, err
 	}
 
 	newUser.HashPassword()

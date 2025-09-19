@@ -4,9 +4,6 @@ import (
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
-
-	// gorm postgres dialect
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // User : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`

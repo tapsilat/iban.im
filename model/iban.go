@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 // Iban : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`

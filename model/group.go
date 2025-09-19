@@ -2,9 +2,6 @@ package model
 
 import (
 	"time"
-
-	// gorm postgres dialect
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // Group : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
@@ -13,8 +10,8 @@ type Group struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`
-	GroupName string `gorm:"type:varchar(100);not null"`
-	GroupURL  string `gorm:"type:varchar(180)"`
+	GroupName string     `gorm:"type:varchar(100);not null"`
+	GroupURL  string     `gorm:"type:varchar(180)"`
 	GroupLogo string
 	Verified  bool
 	Active    bool

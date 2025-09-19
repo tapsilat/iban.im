@@ -14,7 +14,7 @@ Shorten IBAN numbers with url such as :
 
 - Go
 - GraphQL : [graphql-go](https://github.com/graph-gophers/graphql-go)
-- ORM : [gorm](https://github.com/jinzhu/gorm)
+- ORM : [gorm](https://gorm.io)
 
 
 ## Features

@@ -19,12 +19,13 @@ func main() {
 		panic(err)
 	}
 
-	defer d.Close()
+	sqlDB, err := d.DB.DB()
+	if err != nil {
+		panic(err)
+	}
+	defer sqlDB.Close()
 
-	d.DropTableIfExists(&model.User{})
-	d.DropTableIfExists(&model.Iban{})
-	d.DropTableIfExists(&model.Group{})
-	d.CreateTable(&model.User{})
-	d.CreateTable(&model.Iban{})
-	d.CreateTable(&model.Group{})
+	// Drop and create tables using Migrator (GORM v2)
+	d.Migrator().DropTable(&model.User{}, &model.Iban{}, &model.Group{})
+	d.AutoMigrate(&model.User{}, &model.Iban{}, &model.Group{})
 }
