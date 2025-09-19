@@ -290,5 +290,5 @@ query {
 
 ## Maintainers
 
-- [Hüseyin Mert](@hmert)
+- [Hüseyin Mert](https://github.com/hmert)
 - [Fatma Polat](https://github.com/Fbulkaya)
