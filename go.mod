@@ -5,9 +5,9 @@ go 1.25.1
 require (
 	github.com/appleboy/gin-jwt/v2 v2.10.3
 	github.com/gin-gonic/gin v1.10.1
+	github.com/goccy/go-yaml v1.12.0
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/graph-gophers/graphql-go v1.8.0
-	github.com/jinzhu/configor v1.2.2
 	github.com/mattdamon108/gqlmerge v0.2.5
 	golang.org/x/crypto v0.42.0
 	gorm.io/driver/mysql v1.5.7
@@ -17,7 +17,6 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
-	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.14.1 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
@@ -30,7 +29,6 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
-	github.com/goccy/go-yaml v1.12.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect
