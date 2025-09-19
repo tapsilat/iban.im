@@ -288,3 +288,7 @@ query {
 }
 ```
 
+## Maintainers
+
+- [Hüseyin Mert](@hmert)
+- [Fatma Bulkaya](@fbulkaya)
