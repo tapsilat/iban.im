@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.11/graphiql.css"/>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.2.0/umd/react.production.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.2.0/umd/react-dom.production.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/0.11.11/graphiql.min.js"></script>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Graph Console</title>
+		<script src="https://cdn.tailwindcss.com"></script>
 	</head>
-	<body style="width: 100%; height: 100%; margin: 0; overflow: hidden;">
-		<div id="graphiql" style="height: 100vh;">Loading...</div>
+	<body class="bg-slate-50 min-h-screen">
+		<div class="mx-auto max-w-6xl px-4 py-6">
+			<h1 class="text-2xl font-semibold mb-4">GraphQL Console</h1>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<label class="block text-sm font-medium text-slate-700">Query</label>
+					<textarea id="gql-query" class="mt-1 w-full h-64 p-3 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-400 font-mono text-sm" placeholder="{\n  getMyProfile {\n    ok\n    error\n  }\n}"></textarea>
+					<label class="block text-sm font-medium text-slate-700 mt-3">Variables (JSON)</label>
+					<textarea id="gql-vars" class="mt-1 w-full h-32 p-3 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-400 font-mono text-sm" placeholder="{}"></textarea>
+					<div class="mt-3 flex items-center gap-2">
+						<input id="auth-token" type="text" class="flex-1 p-2 rounded border border-slate-300 text-sm" placeholder="Optional: Bearer token" />
+						<button id="run-btn" class="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 text-sm">Run</button>
+					</div>
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-slate-700">Response</label>
+					<pre id="gql-resp" class="mt-1 w-full h-96 p-3 rounded border border-slate-300 bg-white overflow-auto text-sm"></pre>
+				</div>
+			</div>
+		</div>
+
 		<script>
-			function fetchGQL(params) {
-				return fetch("/graph", {
-					method: "post",
-					body: JSON.stringify(params),
-					credentials: "include",
-				}).then(function (resp) {
-					return resp.text();
-				}).then(function (body) {
-					try {
-						return JSON.parse(body);
-					} catch (error) {
-						return body;
-					}
+			async function runQuery() {
+				const query = document.getElementById('gql-query').value;
+				const variablesRaw = document.getElementById('gql-vars').value || '{}';
+				const token = document.getElementById('auth-token').value.trim();
+				let variables = {};
+				try { variables = JSON.parse(variablesRaw); } catch(e) {}
+
+				const headers = { 'Content-Type': 'application/json' };
+				if (token) headers['Authorization'] = `Bearer ${token}`;
+
+				const resp = await fetch('/graph', {
+					method: 'POST',
+					headers,
+					body: JSON.stringify({ query, variables }),
+					credentials: 'include'
 				});
+				const text = await resp.text();
+				try { document.getElementById('gql-resp').textContent = JSON.stringify(JSON.parse(text), null, 2); }
+				catch { document.getElementById('gql-resp').textContent = text; }
 			}
 
-			ReactDOM.render(
-				React.createElement(GraphiQL, {fetcher: fetchGQL}),
-				document.getElementById("graphiql")
-			)
+			document.getElementById('run-btn').addEventListener('click', runQuery);
 		</script>
 	</body>
 </html>
