@@ -1,6 +1,0 @@
-
-db:
-  adapter: postgres
-  name: ibanim
-  user: ibanim
-  password: ibanim

@@ -18,7 +18,7 @@ func (r *Resolvers) SignUp(args signUpMutationArgs) (*SignUpResponse, error) {
 		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
 	// if not found, err will be gorm.ErrRecordNotFound; any other error should be returned
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != gorm.ErrRecordNotFound {
 		msg := "lookup error"
 		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, err
 	}

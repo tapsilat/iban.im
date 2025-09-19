@@ -122,6 +122,51 @@ Connect to http://localhost:8080
 
 You need to set the Http request headers `Authorization`: `{JWT_token}`
 
+## Configuration
+
+You can configure the app via environment variables and/or YAML files. Load order and precedence:
+
+1) Built-in defaults
+2) YAML files (if present): `config/database.yml`, `config/smtp.yml`, `config/application.yml`
+3) Environment variables (highest precedence)
+
+Supported environment variables:
+
+- PORT
+- ENV
+- DEBUG
+- TIMEOUT
+- MAX_REFRESH
+- AUTH_KEY
+- REALM
+- DB_ADAPTER
+- DB_HOST
+- DB_PORT
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
+
+Example `.env` file (copy to `.env` and adjust as needed):
+
+```
+# Application
+PORT=7000
+ENV=localhost
+DEBUG=false
+TIMEOUT=60
+MAX_REFRESH=60
+AUTH_KEY=12345678
+REALM=ibanim zone
+
+# Database
+DB_ADAPTER=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=ibanim
+DB_USER=ibanim
+DB_PASSWORD=ibanim
+```
+
 ## Usage
 
 ### Sign Up
