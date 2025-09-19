@@ -1,4 +1,4 @@
-package main // import "github.com/monopayments/iban.im
+package main // import "github.com/tapsilat/iban.im
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"net/http"
 
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/handler"
-	_ "github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/handler"
+	_ "github.com/tapsilat/iban.im/model"
 
-	// "github.com/monopayments/iban.im/model"
-	"github.com/monopayments/iban.im/resolvers"
-	"github.com/monopayments/iban.im/schema"
+	// "github.com/tapsilat/iban.im/model"
+	"github.com/tapsilat/iban.im/resolvers"
+	"github.com/tapsilat/iban.im/schema"
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 

@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/model"
 	"time"
 
-	"github.com/appleboy/gin-jwt/v2"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/model"
+
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 )
 

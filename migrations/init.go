@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 
-	"github.com/monopayments/iban.im/db"
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/db"
+	"github.com/tapsilat/iban.im/model"
 )
 
 var env string

@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/monopayments/iban.im/config"
+	"github.com/tapsilat/iban.im/config"
 )
 
 // SignJWT : func to generate JWT
@@ -44,7 +44,7 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 		// handle err
 		return "", err
 	}
-	
+
 	body := bytes.NewReader(payloadBytes)
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%d/api/login", config.Config.App.Port), body)

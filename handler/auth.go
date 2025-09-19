@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/monopayments/iban.im/utils"
+	"github.com/tapsilat/iban.im/utils"
 )
 
 // ContextKey for the userID in context

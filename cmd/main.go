@@ -1,11 +1,12 @@
 package main
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/monopayments/iban.im/model"
-	"log"
+	"github.com/tapsilat/iban.im/model"
 )
 
 var DBOld *gorm.DB

@@ -7,7 +7,7 @@ import (
 
 	"fmt"
 
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/model"
 )
 
 // UserResponse is the user response type

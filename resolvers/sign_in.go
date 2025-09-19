@@ -5,9 +5,9 @@ import (
 
 	"fmt"
 
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/model"
-	"github.com/monopayments/iban.im/utils"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/model"
+	"github.com/tapsilat/iban.im/utils"
 	// "fmt"
 )
 
@@ -20,7 +20,7 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (response *SignInResponse, e
 		if err != nil {
 			msg := err.Error()
 			response.Msg = &msg
-		}else{
+		} else {
 			response.Status = true
 			response.Token = tokenString
 		}
@@ -42,7 +42,7 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (response *SignInResponse, e
 
 func (r *Resolvers) GetUserByEmail(email string) model.User {
 	user := model.User{}
-	config.DB.Where("email = ?",email).First(&user)
+	config.DB.Where("email = ?", email).First(&user)
 	return user
 }
 

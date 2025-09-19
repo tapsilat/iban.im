@@ -3,9 +3,10 @@ package resolvers
 import (
 	"context"
 	"fmt"
+
 	"github.com/graph-gophers/graphql-go"
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/handler"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/handler"
 )
 
 func (r *Resolvers) IbanDelete(ctx context.Context, args IbanDeleteMutationArgs) (response *IbanDeleteResponse, err error) {

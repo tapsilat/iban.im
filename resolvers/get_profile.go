@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/model"
 )
 
 func (r *Resolvers) getProfileByUserName(userName string) model.User {
 	user := model.User{}
-	config.DB.Where("handle = ?",userName).First(&user)
+	config.DB.Where("handle = ?", userName).First(&user)
 	return user
 }
 
-func (r *Resolvers) GetProfile(ctx context.Context, args ProfileQueryArgs) (response *GetProfileResponse,err error)  {
+func (r *Resolvers) GetProfile(ctx context.Context, args ProfileQueryArgs) (response *GetProfileResponse, err error) {
 	user := r.getProfileByUserName(args.Username)
 	var ibans []model.Iban
 	response = &GetProfileResponse{}
@@ -22,13 +22,13 @@ func (r *Resolvers) GetProfile(ctx context.Context, args ProfileQueryArgs) (resp
 		if err != nil {
 			msg := err.Error()
 			response.Msg = &msg
-		}else{
+		} else {
 			response.Status = true
-			response.User = &UserResponse{u:&user}
+			response.User = &UserResponse{u: &user}
 			var ibansResponse []*IbanResponse
 			for _, iban := range ibans {
 				tmp := iban
-				ibansResponse=append(ibansResponse,&IbanResponse{i:&tmp})
+				ibansResponse = append(ibansResponse, &IbanResponse{i: &tmp})
 			}
 			response.Iban = &ibansResponse
 		}
@@ -62,7 +62,6 @@ func (r *GetProfileResponse) Ok() bool {
 func (r *GetProfileResponse) Error() *string {
 	return r.Msg
 }
-
 
 type ProfileQueryArgs struct {
 	Username string

@@ -1,8 +1,8 @@
 package resolvers
 
 import (
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/model"
 )
 
 // SignUp mutation creates user

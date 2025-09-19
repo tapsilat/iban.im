@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/monopayments/iban.im/config"
-	"github.com/monopayments/iban.im/handler"
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/config"
+	"github.com/tapsilat/iban.im/handler"
+	"github.com/tapsilat/iban.im/model"
 )
 
 // IbanNew mutation creates iban

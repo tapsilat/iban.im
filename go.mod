@@ -1,4 +1,4 @@
-module github.com/monopayments/iban.im
+module github.com/tapsilat/iban.im
 
 go 1.16
 

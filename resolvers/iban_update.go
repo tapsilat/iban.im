@@ -5,17 +5,17 @@ import (
 	"strings"
 
 	"github.com/graph-gophers/graphql-go"
-	"github.com/monopayments/iban.im/config"
+	"github.com/tapsilat/iban.im/config"
 
 	"fmt"
 
-	"github.com/monopayments/iban.im/handler"
-	"github.com/monopayments/iban.im/model"
+	"github.com/tapsilat/iban.im/handler"
+	"github.com/tapsilat/iban.im/model"
 )
 
 func (r *Resolvers) GetIbanById(id graphql.ID) model.Iban {
 	iban := model.Iban{}
-	config.DB.Where("iban_id = ?",id).First(&iban)
+	config.DB.Where("iban_id = ?", id).First(&iban)
 	return iban
 }
 
@@ -28,13 +28,13 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		if err != nil {
 			msg := err.Error()
 			response.Msg = &msg
-		}else{
+		} else {
 			response.Status = true
-			response.Iban =  &IbanResponse{i: &iban}
+			response.Iban = &IbanResponse{i: &iban}
 		}
 	}()
 
-	if userID := ctx.Value(handler.ContextKey("UserID"));userID == nil {
+	if userID := ctx.Value(handler.ContextKey("UserID")); userID == nil {
 		err = fmt.Errorf("not authorized")
 		return
 	}
@@ -52,7 +52,7 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		iban.IsPrivate = true
 		iban.Password = args.Password
 		iban.HashPassword()
-	}else if !args.IsPrivate{
+	} else if !args.IsPrivate {
 		iban.IsPrivate = false
 		iban.Password = ""
 	}
@@ -62,12 +62,12 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 }
 
 type IbanUpdateMutationArgs struct {
-	Text     string
-	Description     string
-	Password string
-	Handle   string
-	Id 		 graphql.ID
-	IsPrivate bool `json:"isPrivate"`
+	Text        string
+	Description string
+	Password    string
+	Handle      string
+	Id          graphql.ID
+	IsPrivate   bool `json:"isPrivate"`
 }
 
 // IbanUpdateResponse is the response type

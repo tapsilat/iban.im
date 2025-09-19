@@ -3,7 +3,7 @@ package resolvers
 import (
 	"context"
 
-	"github.com/monopayments/iban.im/handler"
+	"github.com/tapsilat/iban.im/handler"
 )
 
 // GetMyIbansresolver
@@ -14,14 +14,14 @@ func (r *Resolvers) GetMyIbans(ctx context.Context) (*GetMyIbansResponse, error)
 		msg := "Not Authorized"
 		return &GetMyIbansResponse{Status: false, Msg: &msg, Iban: nil}, nil
 	}
-	userid,_:= UserID.(int)
-	ibans:=r.FindIbanByOwner(userid)
+	userid, _ := UserID.(int)
+	ibans := r.FindIbanByOwner(userid)
 	var IbansResponse []*IbanResponse
-	for _,iban := range ibans{
+	for _, iban := range ibans {
 		tmp := iban
-		IbansResponse=append(IbansResponse,&IbanResponse{i:&tmp})
+		IbansResponse = append(IbansResponse, &IbanResponse{i: &tmp})
 	}
-	
+
 	return &GetMyIbansResponse{Status: true, Msg: nil, Iban: &IbansResponse}, nil
 }
 

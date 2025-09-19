@@ -12,7 +12,7 @@
             Register
         </router-link>
 
-        Build By <a href="https://monopayments.com">MonoPayments</a>
+        Build By <a href="https://tapsilat.com">tapsilat</a>
         
     </div>
 </template>
