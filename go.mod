@@ -20,7 +20,6 @@ require (
 	github.com/lib/pq v1.10.3 // indirect
 	github.com/mattdamon108/gqlmerge v0.2.3
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/qor/qor v1.2.0 // indirect
 	github.com/qor/validations v0.0.0-20171228122639-f364bca61b46

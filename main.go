@@ -26,7 +26,11 @@ const identityKey = "UserID"
 
 func main() {
 
-	router := gin.New()
+	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		fmt.Println(">>> New request:", c.Request.Method, c.Request.URL.Path)
+		c.Next()
+	})
 
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
@@ -42,7 +46,11 @@ func main() {
 		log.Fatal("JWT Error:" + err.Error())
 	}
 
-	router.POST("/api/login", authMiddleware.LoginHandler)
+	router.POST("/api/login", func(c *gin.Context) {
+		fmt.Println(">>> /api/login endpoint called") // Log ekleyelim
+		authMiddleware.LoginHandler(c)
+	})
+
 	auth := router.Group("/auth")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 

@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: always
+    container_name: go_app
+    environment:
+      - DB_ADAPTER=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    depends_on:
+      - db
+    ports:
+      - "4880:8080"
+    volumes:
+      - ./templates:/usr/app/templates       
+      - ./config:/usr/app/config             
+
+volumes:
+  postgres_data:

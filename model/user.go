@@ -15,13 +15,13 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`
-	Email     string `gorm:"type:varchar(100);not null"`
-	Password  string `gorm:"not null"`
-	Handle    string `gorm:"not null;unique"`
-	FirstName string `gorm:"type:varchar(50);not null"`
-	LastName  string `gorm:"type:varchar(50);not null"`
-	Bio       string `gorm:"type:text"`
-	Visible   bool // visible email address
+	Email     string     `gorm:"type:varchar(100);not null"`
+	Password  string     `gorm:"not null"`
+	Handle    string     `gorm:"not null;unique"`
+	FirstName string     `gorm:"type:varchar(50);not null"`
+	LastName  string     `gorm:"type:varchar(50);not null"`
+	Bio       string     `gorm:"type:text"`
+	Visible   bool       // visible email address
 	Avatar    string
 	Verified  bool
 	Active    bool
@@ -44,9 +44,6 @@ func (user *User) HashPassword() {
 func (user *User) ComparePassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 
-	if err != nil {
-		return false
-	}
+	return err == nil
 
-	return true
 }
