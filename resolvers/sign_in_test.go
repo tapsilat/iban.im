@@ -13,7 +13,12 @@ func TestSignIn(t *testing.T) {
 		t.Errorf("%s", err.Error())
 		return
 	}
-	defer db.DB.Close()
+	sqlDB, err := db.DB.DB()
+	if err != nil {
+		t.Errorf("%s", err.Error())
+		return
+	}
+	defer sqlDB.Close()
 
 	user := model.User{}
 	db.DB.Where("email = ?", "notexisting@test.com").First(&user)
