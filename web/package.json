@@ -15,7 +15,7 @@
     "strip-ansi": "^7.0.1",
     "tesseract.js": "^2.1.5",
     "vue": "^2.6.14",
-    "vue-apollo": "^3.0.8",
+    "vue-apollo": "^3.1.2",
     "vue-body-class": "^3.0.2",
     "vue-clipboard2": "^0.3.3",
     "vue-gtm": "^3.5.0",
