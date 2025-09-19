@@ -44,6 +44,16 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		return
 	}
 
+	// Basic validations (replacing removed qor/validations callbacks)
+	if strings.TrimSpace(args.Text) == "" {
+		err = fmt.Errorf("you have to provide IBAN")
+		return
+	}
+	if strings.TrimSpace(args.Handle) == "" {
+		err = fmt.Errorf("you have to provide handle")
+		return
+	}
+
 	iban.Handle = strings.ToLower(args.Handle)
 	iban.Text = args.Text
 	iban.Description = args.Description

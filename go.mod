@@ -7,7 +7,6 @@ replace github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt v3.2.0+incompat
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/appleboy/gin-jwt/v2 v2.7.0
-	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
@@ -21,8 +20,6 @@ require (
 	github.com/mattdamon108/gqlmerge v0.2.3
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	github.com/qor/qor v1.2.0 // indirect
-	github.com/qor/validations v0.0.0-20171228122639-f364bca61b46
 	github.com/ugorji/go v1.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect

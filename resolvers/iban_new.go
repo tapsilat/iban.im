@@ -26,8 +26,24 @@ func (r *Resolvers) IbanNew(ctx context.Context, args IbanNewMutationArgs) (*Iba
 		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
 	}
 
-	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID: uint(userid)}
-	IbanNew.HashPassword()
+	// Basic validations (replacing removed qor/validations callbacks)
+	if strings.TrimSpace(args.Text) == "" {
+		msg := "you have to provide IBAN"
+		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	}
+	if strings.TrimSpace(args.Handle) == "" {
+		msg := "you have to provide handle"
+		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	}
+	if args.IsPrivate && strings.TrimSpace(args.Password) == "" {
+		msg := "you have to provide password"
+		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	}
+
+	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID: uint(userid), IsPrivate: args.IsPrivate}
+	if args.IsPrivate {
+		IbanNew.HashPassword()
+	}
 	if err := config.DB.Create(&IbanNew).Error; err != nil {
 		msg := err.Error()
 		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, err

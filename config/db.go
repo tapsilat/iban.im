@@ -10,7 +10,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/qor/validations"
 	"github.com/tapsilat/iban.im/model"
 )
 
@@ -57,7 +56,6 @@ func InitDB() {
 		log.Println("Successfully connected to DB")
 	}
 
-	validations.RegisterCallbacks(DB)
 	DB.LogMode(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(30)

@@ -25,7 +25,6 @@ type User struct {
 	Avatar    string
 	Verified  bool
 	Active    bool
-	Admin     bool
 	Ibans     []*Iban `gorm:"polymorphic:Owner;"`
 }
 
