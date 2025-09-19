@@ -1,6 +1,9 @@
 # IBAN.im
 Shorten, create and share memorable links for IBANS
 
+**BIG REFACTORING STARTED**
+
+
 ## Purpose
 Shorten IBAN numbers with url such as :
 - iban.im/user/alias
