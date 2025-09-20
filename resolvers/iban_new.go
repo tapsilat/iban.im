@@ -58,9 +58,7 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool {
 	ibans := r.FindIbanByOwner(userid)
 	fmt.Printf("ibans: %+v\n", ibans)
 	for _, iban := range ibans {
-		fmt.Println(iban.Handle)
 		if handle == strings.ToLower(iban.Handle) {
-			fmt.Println("Same handle found")
 			handleStatus = true
 			break
 		}

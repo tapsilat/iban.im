@@ -27,7 +27,6 @@ func main() {
 
 	router := gin.Default()
 	router.Use(func(c *gin.Context) {
-		fmt.Println(">>> New request:", c.Request.Method, c.Request.URL.Path)
 		c.Next()
 	})
 
@@ -48,7 +47,6 @@ func main() {
 	}
 
 	router.POST("/api/login", func(c *gin.Context) {
-		fmt.Println(">>> /api/login endpoint called") // Log ekleyelim
 		authMiddleware.LoginHandler(c)
 	})
 
@@ -56,14 +54,12 @@ func main() {
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
 	router.GET("/graph", func(c *gin.Context) {
-		fmt.Println("inside get graph")
 		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
 	})
 
 	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
-		fmt.Println("inside post graph")
 		ctx := c.Request.Context()
 
 		if _, ok := c.Request.Header["Authorization"]; ok {

@@ -1,10 +1,12 @@
 package tools
+
 import (
-    "fmt"
-	"reflect"
 	"context"
+	"fmt"
+	"reflect"
 )
-func GetContextDetails(c context.Context){
+
+func GetContextDetails(c context.Context) {
 	rv := reflect.ValueOf(c)
 	for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
 		rv = rv.Elem()
@@ -15,14 +17,11 @@ func GetContextDetails(c context.Context){
 			f := rv.Type().Field(i)
 
 			if f.Name == "key" {
-				fmt.Println("key: ", rv.Field(i))
 			}
 			if f.Name == "Context" {
-				
 				// this is just a repetition of the above, so you can make a recursive
 				// function from it, or for loop, that stops when there are no more
 				// contexts to be inspected.
-				
 				rv := rv.Field(i)
 				for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
 					rv = rv.Elem()
@@ -33,8 +32,7 @@ func GetContextDetails(c context.Context){
 						f := rv.Type().Field(i)
 
 						if f.Name == "key" {
-							fmt.Println("key: ", rv.Field(i))
-						}else{
+						} else {
 							fmt.Printf("value: %+v\n", rv.Field(i))
 						}
 						// ...
