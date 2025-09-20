@@ -1,7 +1,7 @@
 package schema
 
 import (
-	gql "github.com/mattdamon108/gqlmerge/lib"
+	gql "github.com/mununki/gqlmerge/lib"
 )
 
 func NewSchema() *string {

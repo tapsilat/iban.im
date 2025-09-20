@@ -8,7 +8,7 @@ require (
 	github.com/goccy/go-yaml v1.12.0
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/graph-gophers/graphql-go v1.8.0
-	github.com/mattdamon108/gqlmerge v0.2.5
+	github.com/mununki/gqlmerge v0.2.17
 	golang.org/x/crypto v0.42.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/driver/postgres v1.5.9
