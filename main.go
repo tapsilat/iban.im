@@ -11,7 +11,6 @@ import (
 	"github.com/tapsilat/iban.im/handler"
 	_ "github.com/tapsilat/iban.im/model"
 
-	// "github.com/tapsilat/iban.im/model"
 	"github.com/tapsilat/iban.im/resolvers"
 	"github.com/tapsilat/iban.im/schema"
 
