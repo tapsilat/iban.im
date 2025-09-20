@@ -13,10 +13,6 @@ import (
 // ChangePassword mutation change password
 func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutationArgs) (*ChangePasswordResponse, error) {
 	userID := ctx.Value(handler.ContextKey("UserID"))
-	// fmt.Println("inside change password")
-	// fmt.Println("User id :",userID)
-	// fmt.Printf("ctx: %+v\n",ctx)
-
 	if userID == nil {
 		msg := "Not Authorized"
 		return &ChangePasswordResponse{Status: false, Msg: &msg, User: nil}, nil

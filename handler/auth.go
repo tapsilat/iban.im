@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/tapsilat/iban.im/utils"
@@ -15,12 +14,10 @@ type ContextKey string
 func Authenticate(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// var userID *string
-		fmt.Println("inside authentication")
 		ctx := r.Context()
 		userID, err := validateAuthHeader(ctx, r)
 		if err != nil {
 			// should do something here
-			fmt.Println("validate auth header error")
 		}
 
 		if userID != nil {
@@ -33,7 +30,6 @@ func Authenticate(h http.Handler) http.Handler {
 
 func validateAuthHeader(ctx context.Context, r *http.Request) (*string, error) {
 	_ = ctx //Added to show temporarily used.
-	fmt.Println("inside validate auth header")
 	tokenString := r.Header.Get("Authorization")
 	if tokenString == "" {
 		return nil, nil

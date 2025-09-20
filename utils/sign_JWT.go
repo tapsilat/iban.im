@@ -21,7 +21,7 @@ func SignJWT(userMail, userPass *string) (*string, error) {
 	// })
 
 	// tokenString, err := token.SignedString([]byte("my_secret"))
-	// fmt.Println("signJWT token: ",tokenString)
+	//
 
 	// return &tokenString, err
 	return &jwtToken, err
@@ -50,7 +50,7 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%d/api/login", config.Config.App.Port), body)
 	if err != nil {
 		// handle err
-		fmt.Println("error in req: ", err)
+
 		return "", err
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -58,24 +58,23 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		// handle err
-		fmt.Println("error in resp: ", err)
+
 		return "", err
 
 	}
 	fmt.Printf("resp data: %+v\n", resp.Body)
 	respbody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("error in resp body read: ", err)
+
 		return "", err
 	}
-	fmt.Println("resp: ", string(respbody))
+
 	m := make(map[string]interface{})
 	errUnMarshal := json.Unmarshal(respbody, &m)
 	if errUnMarshal != nil {
-		fmt.Println("error in resp body unmarshal: ", errUnMarshal)
+
 		return "", errUnMarshal
 	}
-	fmt.Println("token: ", m["token"])
 
 	defer resp.Body.Close()
 	token := fmt.Sprintf("%s", m["token"])

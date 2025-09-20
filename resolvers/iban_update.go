@@ -98,9 +98,7 @@ func (r *IbanUpdateResponse) Error() *string {
 }
 func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string) model.Iban {
 	for _, iban := range ibans {
-		fmt.Println(iban.Handle)
 		if handle == iban.Handle {
-			fmt.Println("Same handle found")
 			return iban
 		}
 
