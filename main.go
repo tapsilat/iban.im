@@ -80,26 +80,18 @@ func main() {
 			Variables     map[string]interface{} `json:"variables"`
 		}
 		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
-			log.Println("decode error", err)
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
-
-		log.Println("params")
-		log.Println(params)
 
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
 		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{}, opts...)
 
 		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 		if err != nil {
-			log.Println("graph response error", err.Error())
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
-
-		log.Println("response")
-		log.Printf("%v", string(response.Data))
 
 		c.JSON(200, response)
 	})
