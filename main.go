@@ -25,6 +25,9 @@ const identityKey = "UserID"
 
 func main() {
 
+	// Initialize database and run AutoMigrate at startup
+	config.InitDB()
+
 	router := gin.Default()
 	router.Use(func(c *gin.Context) {
 		c.Next()
