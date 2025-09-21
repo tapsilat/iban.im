@@ -5,7 +5,7 @@ go 1.25.1
 require (
 	github.com/appleboy/gin-jwt/v2 v2.10.3
 	github.com/gin-gonic/gin v1.11.0
-	github.com/goccy/go-yaml v1.18.0
+	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/graph-gophers/graphql-go v1.8.0
 	github.com/mununki/gqlmerge v0.2.17
