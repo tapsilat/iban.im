@@ -1,24 +1,23 @@
-# web
+# web (Vite + Vue 3 + Tailwind)
 
-## Project setup
+## Install
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+yarn install
 ```
 
-### Compiles and minifies for production
+## Develop
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+yarn dev
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Dev server runs on http://localhost:4881 and proxies /graph to http://localhost:4880.
+
+## Build
+```
+yarn build
+```
+
+## Preview build (optional)
+```
+yarn preview
+```

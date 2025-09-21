@@ -1,39 +1,21 @@
 <template>
-    <div class="box">
-        <v-form class="form login-form" v-model="isValid">
-            <v-row>
-                <v-col :sm="12">
-                    <h2 class="text-center">Login</h2>
-                </v-col>
-
-                <v-col :sm="12">
-                    <v-text-field
-                            v-model="formData.email"
-                            label="Email"
-                            :rules="formRules.email"
-                    />
-                </v-col>
-                <v-col :sm="12">
-                    <v-text-field
-                            v-model="formData.password"
-                            label="Password"
-                            :rules="formRules.password"
-                            type="password"
-                    />
-                </v-col>
-
-                <v-col v-if="error" :sm="12">
-                    <div class="error">
-                        {{error}}
-                    </div>
-                </v-col>
-                <v-col class="df-sbc">
-                    <v-btn class="ma-2" outlined to="/register">Register</v-btn>
-                    <v-btn class="ma-2" :dark="isValid" :disabled="!isValid" color="primary" @click="submit">Login</v-btn>
-                </v-col>
-            </v-row>
-
-        </v-form>
+    <div class="box max-w-md mx-auto bg-white p-6 rounded-lg shadow">
+        <h2 class="text-center text-xl font-semibold mb-4">Login</h2>
+        <form class="space-y-4" @submit.prevent="submit">
+            <div>
+                <label class="block text-sm font-medium">Email</label>
+            <input v-model="formData.email" type="email" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+            <input v-model="formData.password" type="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            </div>
+            <div v-if="error" class="error">{{ error }}</div>
+            <div class="flex justify-between">
+                <router-link class="btn" to="/register">Register</router-link>
+                <button type="submit" class="btn mono-bg text-white px-4 py-2 rounded">Login</button>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -44,18 +26,10 @@
     export default {
         name: "Login",
         data: () => ({
-            isValid: false,
             formData: {
                 email: '',
                 password: '',
             },
-            formRules: {
-                email: [
-                    v => !!v || 'Mail is required',
-                    v => /.+@.+/.test(v) || 'please use a valid mail adress',
-                ],
-                password: [v => !!v || 'Password is required']
-            }
         }),
         computed: {
             ...mapState(['error'])

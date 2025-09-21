@@ -1,18 +1,16 @@
 <template>
-    <div class="box">
-         Shorten, create and share memorable links for IBANS.
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow text-center">
+         <p>Shorten, create and share memorable links for IBANS.</p>
 
-        <strong>IBAN.im/nickname/bank</strong>
-        <br><br>
-        <router-link class="btn"  style="--color: var(--primary-2)" to="/login">
-            Login
-        </router-link>
+        <p><strong>IBAN.im/nickname/bank</strong></p>
+        <p>
+        <router-link class="inline-block px-4 py-2 rounded bg-blue-600 text-white" to="/login">Login</router-link>
         or
-        <router-link class="btn" to="/register" >
-            Register
-        </router-link>
+        <router-link class="inline-block px-4 py-2 rounded bg-gray-100" to="/register">Register</router-link>
 
-        Build By <a href="https://tapsilat.com">tapsilat</a>
+        </p>
+      
+        <p>Build By <a href="https://tapsilat.com">tapsilat</a></p>
         
     </div>
 </template>

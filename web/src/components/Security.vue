@@ -1,35 +1,40 @@
 <template>
-    <div>
-        <v-form class="profile-form" v-model="isValid" ref="form">
-            <v-row>
-                <v-col :md="12">
-                    <h3 class="text-center">Update Password</h3>
-                </v-col>
-                <v-col :sm="12" :md="6">
-                    <v-text-field
-                            v-model="password"
-                            label="Password"
-                            :rules="formRules.password"
-                            :type="showPassword ? 'text' : 'password'"
-                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-                            @click:append="showPassword = !showPassword"
-                    />
-                </v-col>
-                <v-col :sm="12" :md="6">
-                    <v-text-field
-                            v-model="passwordRepeat"
-                            label="Password Again"
-                            :rules="[passwordConfirmationRule]"
-                            :type="showPassword ? 'text' : 'password'"
-                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-                            @click:append="showPassword = !showPassword"
-                    />
-                </v-col>
-                <v-col class="fr">
-                    <v-btn class="ma-2" color="primary" :dark="isValid" :disabled="!isValid" :outlined="!isValid"  @click="submit">Save</v-btn>
-                </v-col>
-            </v-row>
-        </v-form>
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h3 class="text-center text-lg font-semibold mb-4">Update Password</h3>
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="submit">
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+                <input
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="password"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                    minlength="7"
+                />
+                <button type="button" class="text-xs text-blue-600 mt-1" @click="showPassword = !showPassword">
+                    {{ showPassword ? 'Hide' : 'Show' }}
+                </button>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password Again</label>
+                <input
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="passwordRepeat"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                    minlength="7"
+                />
+            </div>
+            <div class="md:col-span-2 flex justify-end">
+                <button
+                    type="submit"
+                    :disabled="!isValid"
+                    class="px-4 py-2 rounded bg-blue-600 text-white disabled:bg-gray-300"
+                >
+                    Save
+                </button>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -37,20 +42,18 @@
     export default {
         name: "Security",
         data: () => ({
-            isValid: false,
             showPassword: false,
             passwordRepeat: null,
             password: null,
-            formRules: {
-                password: [
-                    v => !!v || 'Password is required',
-                    v => v && v.length > 6 || 'Minimum length is 7'
-                ]
-            },
         }),
         computed: {
-            passwordConfirmationRule() {
-                return () => (this.password === this.passwordRepeat) || 'Password is not match'
+            isValid() {
+                return (
+                  this.password &&
+                  this.passwordRepeat &&
+                  this.password.length >= 7 &&
+                  this.password === this.passwordRepeat
+                );
             },
         },
         methods: {

@@ -1,21 +1,15 @@
 <template>
     <div v-if="profile">
-        <div class="profile-info">
-            <h1>{{name}}</h1>
+        <div class="text-center mb-4">
+            <h1 class="text-xl font-semibold">{{ name }}</h1>
         </div>
-        <v-list flat>
-            <v-list-item-group v-model="selectedIndex" color="primary">
-                <v-list-item
-                        v-for="(item,i) in $store.state.ibans"
-                        :key="i"
-                        class="iban-item"
-                >
-                    <v-btn :to="`/${profile.handle}/${item.handle}`">
-                        <span>{{item.handle}}</span>
-                    </v-btn>
-                </v-list-item>
-            </v-list-item-group>
-        </v-list>
+        <ul class="space-y-2">
+            <li v-for="(item,i) in $store.state.ibans" :key="i">
+                <router-link class="inline-block px-3 py-2 rounded bg-gray-100" :to="`/${profile.handle}/${item.handle}`">
+                    {{ item.handle }}
+                </router-link>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -24,7 +18,6 @@
     export default {
         name: "Single",
         data: () => ({
-            selectedIndex: undefined,
         }),
         computed : {
             profile() {

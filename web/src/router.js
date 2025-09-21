@@ -1,22 +1,19 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './components/Home'
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Scan from "./components/Scan";
-import About from "./components/About";
-import VueBodyClass from 'vue-body-class';
-import Ibans from "./components/Ibans";
-import Profile from "./components/Profile";
-import Security from "./components/Security";
-import Logout from "./components/Logout";
-import Main from "./components/Main";
-import Single from "./components/Single";
-import SingleIban from "./components/SingleIban";
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from './components/Home.vue'
+import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
+import Scan from "./components/Scan.vue";
+import About from "./components/About.vue";
+// import VueBodyClass from 'vue-body-class';
+import Ibans from "./components/Ibans.vue";
+import Profile from "./components/Profile.vue";
+import Security from "./components/Security.vue";
+import Logout from "./components/Logout.vue";
+import Main from "./components/Main.vue";
+import Single from "./components/Single.vue";
+import SingleIban from "./components/SingleIban.vue";
 import store from "./store";
 
-
-Vue.use(Router);
 
 const routes =  [
     {
@@ -74,7 +71,7 @@ const routes =  [
             },
             {
                 path: '/about',
-                name: 'home.login',
+                name: 'home.about',
                 component: About,
                 meta: {
                     bodyClass: 'guest',
@@ -105,7 +102,8 @@ const routes =  [
                 component: Scan,
                 meta: {
                     bodyClass: 'scan',
-                    public: true,
+                    public: false,
+                    requiresAuth: true
                 }
             },
 
@@ -129,37 +127,33 @@ const routes =  [
     },
 ];
 
-const router = new Router({
-    mode: 'history',
-    routes
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
 });
-
-const vueBodyClass = new VueBodyClass(routes);
 
 //router.beforeEach((to, from, next) => { vueBodyClass.guard(to, next) });
 router.beforeEach(async(to,from,next) => {
-    if(to.path !== '/scan') {
-        if (to.path === '/logout'){
-            localStorage.removeItem('user');
-            next('/login');
-        }
-        const token = localStorage.getItem("user");
-        if(token && !store.state.logged) {
-            store.commit('SET_HEADER', token);
-            await store.dispatch('getUser');
-        }
-        if(token && !store.state.logged){
-            next('/login');
-        }
-        if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
-            next('/login');
-        }
-
-        if (to.matched.some(record => record.meta.public) && store.state.logged && to.path !== '/scan') {
-            next('/dashboard');
-        }
+    if (to.path === '/logout'){
+        localStorage.removeItem('user');
+        next('/login');
     }
-    vueBodyClass.guard(to, next);
+    const token = localStorage.getItem("user");
+    if(token && !store.state.logged) {
+        store.commit('SET_HEADER', token);
+        await store.dispatch('getUser');
+    }
+    if(token && !store.state.logged){
+        next('/login');
+    }
+    if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
+        next('/login');
+    }
+
+    if (to.matched.some(record => record.meta.public) && store.state.logged) {
+        next('/dashboard');
+    }
+    next();
 });
 
 

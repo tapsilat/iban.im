@@ -1,7 +1,7 @@
 <template>
-    <div id="nav" class="cont">
+    <div id="nav" class="container mx-auto p-4 flex justify-center items-center">
         <router-link class="home-logo" :to="this.$store.state.logged ? '/dashboard' : '/'" >
-            <img src="https://svgshare.com/i/J_x.svg" alt="iban.im">
+            IBAN.im
         </router-link>
     </div>
 </template>

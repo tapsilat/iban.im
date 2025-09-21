@@ -1,69 +1,32 @@
 <template>
-    <div v-if="profile" class="single-iban">
-        <div class="single-iban__button">
-            <v-tooltip right>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn 
-                        icon
-                        color="pink"
-                        v-bind="attrs"
-                        v-on="on"
-                        :to="{name: 'home.single', params: {username: $route.params.username}}">
-                        <v-icon>mdi-keyboard-return</v-icon>
-                    </v-btn>
-                
-                </template>
-                <span>Profile</span>
-            </v-tooltip>
+        <div v-if="profile" class="">
+        <div class="single-iban__button mb-4">
+            <router-link class="btn" :to="{ name: 'home.single', params: { username: $route.params.username } }">Profile</router-link>
         </div>
-        <ul v-if="current && !current.isPrivate">
-            <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
-            <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
-            <li>
-                <span>
-                    <v-icon left>
-                        mdi-cash-multiple
-                    </v-icon>
-                    IBAN
-                </span>
-                <span>
-                    {{current.text}}
-                </span>
-                <span>
-                    <v-icon 
-                        left 
-                        style="cursor: pointer;"
-                        v-clipboard:copy="current.text"
-                        v-clipboard:success="onCopy"
-                        v-clipboard:error="onError">
-                        mdi-content-copy
-                    </v-icon>
-                </span>
-            </li>
-            <li>
-                <span>
-                    {{current.description}}
-                </span>
-            </li>
-        </ul>
-        <v-form v-else-if="current && current.isPrivate" class="show-info" v-model="isValid">
-            <v-row>
-                <v-col :md="6" :sm="12">
-                    <v-text-field
-                            v-model="formData.password"
-                            label="Password"
-                            :rules="formRules.password"
-                    />
-                </v-col>
-                <v-col :md="6" :sm="12">
-                    <div class="show-submit">
-                        <v-btn class="ma-2" :dark="isValid" :disabled="!isValid" color="primary" @click="showInfo">Show</v-btn>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-form>
+            <ul v-if="current && !current.isPrivate" class="list-none flex flex-col items-center">
+                <li class="w-full max-w-xl flex border border-gray-200 border-b-0"> <span class="w-40 font-medium p-2">IBAN name</span><span class="p-2">{{ name }}</span></li>
+                <li class="w-full max-w-xl flex border border-gray-200 border-b-0"> <span class="w-40 font-medium p-2">Handle</span><span class="p-2">{{ current.handle }}</span></li>
+                <li class="w-full max-w-xl flex border border-gray-200 border-b-0">
+                    <span class="w-40 font-medium p-2">IBAN</span>
+                    <span class="p-2 flex-1">{{ current.text }}</span>
+                    <span class="p-2"><button class="px-3 py-1 rounded bg-gray-100" @click="copy(current.text)">Copy</button></span>
+                </li>
+                <li class="w-full max-w-xl flex border border-gray-200">
+                    <span class="p-2">{{ current.description }}</span>
+                </li>
+            </ul>
+        <form v-else-if="current && current.isPrivate" class="show-info" @submit.prevent="showInfo">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                      <input v-model="formData.password" type="password" placeholder="Password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                </div>
+                <div class="show-submit">
+                    <button type="submit" class="btn mono-bg text-white px-4 py-2 rounded">Show</button>
+                </div>
+            </div>
+        </form>
         <div v-else>
-            <b>An account named <i>{{$route.params.alias}}</i> was not found</b>
+            <b>An account named <i>{{ $route.params.alias }}</i> was not found</b>
         </div>
     </div>
 </template>
@@ -74,13 +37,10 @@
         name: "SingleIban",
         data: () => ({
             canShow: false,
-            isValid: false,
             formData: {
                 password: '',
             },
-            formRules: {
-                password: [v => !!v || 'Password is required']
-            }
+            
         }),
         computed: {
             ...mapState(['ibans','profile']),
@@ -107,12 +67,13 @@
                     password : this.formData.password
                 });
             },
-            onCopy() {
-                // TODO: can be added alert library or something
-                alert('Iban was copied to clipboard!')
-            },
-            onError() {
-                alert('Something went wrong!')
+            async copy(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    alert('Iban was copied to clipboard!');
+                } catch (e) {
+                    alert('Something went wrong!');
+                }
             }
         },
         watch : {

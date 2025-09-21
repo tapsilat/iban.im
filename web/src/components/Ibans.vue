@@ -1,96 +1,83 @@
 <template>
-    <div class="iban-wrap">
-        <h3 class="text-center">IBANs</h3>
-        <div class="i-list">
-            <v-list flat>
-                <v-list-item-group v-model="selectedIndex" color="primary">
-                    <v-list-item
-                        v-for="(item,i) in ibans"
-                        :key="i"
-                        class="iban-item"
-                    >
-                        <v-list-item-icon>
-                            <v-icon v-if="selectedIndex === i">mdi-minus</v-icon>
-                            <v-icon v-else>mdi-plus-circle-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.handle" />
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-            </v-list>
-        </div>
-        <v-dialog v-model="dialog" max-width="600px">
-            <template v-slot:activator="{ on }">
-                <v-btn class="text-none add-iban" v-on="on" @click="show" rounded>
-                    <v-icon>mdi-plus</v-icon> Add
-                </v-btn>
+    <div class="max-w-3xl mx-auto">
+        <h3 class="text-center text-xl font-semibold mb-4">IBANs</h3>
+        <div class="border rounded-md divide-y">
+            <template v-if="ibans && ibans.length">
+                <button
+                    v-for="(item, i) in ibans"
+                    :key="i"
+                    class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 text-left lowercase"
+                    @click="selectedIndex = i"
+                >
+                    <span class="font-medium">{{ item.handle }}</span>
+                    <span class="text-gray-400">{{ selectedIndex === i ? '-' : '+' }}</span>
+                </button>
             </template>
-            <v-card>
-                <v-card-text>
-                    <v-container>
-                        <div class="i-form pt-4">
-                            <v-btn class="text-none close-modal" @click="dialog = false">
-                                <v-icon>mdi-close</v-icon>
-                            </v-btn>
-                            <v-form ref="form" v-model="valid">
-                                <div class="form-item">
-                                    <v-text-field class="lowercase-input"
-                                            v-model="current.handle"
-                                            label="Handle"
-                                            :rules="formRules.handle" />
-                                </div>
-                                <div class="form-item">
-                                    <v-text-field
-                                            v-model="current.text"
-                                            label="IBAN No"
-                                            :rules="formRules.text" />
-                                </div>
-                                <div class="form-item">
-                                    <v-text-field
-                                            v-model="current.description"
-                                            label="IBAN Description"
-                                            :rules="formRules.text" />
-                                </div>
-                                <div class="form-item">
-                                    <v-checkbox
-                                            v-model="current.isPrivate"
-                                            label=" Private"
-                                    />
-                                </div>
-                                <div class="form-item" v-if="current.isPrivate">
-                                    <v-text-field
-                                            v-model="current.password"
-                                            label="Password"
-                                            :rules="[passwordRule]" />
-                                </div>
-                                <div class="form-item form-buttons">
-                                    <v-btn v-if="current.id === ''" @click="cancel" class="text-none add-question" outlined>
-                                        <v-icon>mdi-minus</v-icon>
-                                        Cancel
-                                    </v-btn>
-                                    <v-btn v-else @click="remove" class="text-none add-question" outlined>
-                                        <v-icon>mdi-minus</v-icon>
-                                        Delete
-                                    </v-btn>
-                                    <v-btn color="primary" dark @click="save" class="text-none add-question">
-                                        <v-icon dark>mdi-plus</v-icon>
-                                        Save
-                                    </v-btn>
-                                </div>
-                            </v-form>
-                        </div>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+            <div v-else class="p-4 text-gray-500">No IBANs yet.</div>
+        </div>
 
+        <div class="mt-4">
+            <button @click="show" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white">
+                <span class="text-lg">+</span>
+                Add
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div v-if="dialog" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div class="w-full max-w-xl bg-white rounded-lg shadow p-6 relative">
+                <button @click="dialog = false" class="absolute right-3 top-3 text-gray-500 hover:text-gray-700" aria-label="Close">×</button>
+
+                <h4 class="text-lg font-semibold mb-4">{{ current.id === '' ? 'Add IBAN' : 'Edit IBAN' }}</h4>
+
+                <form @submit.prevent="save" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Handle</label>
+                        <input
+                            v-model="current.handle"
+                            class="w-full rounded border px-3 py-2 lowercase"
+                            placeholder="handle"
+                            required
+                            pattern="[A-Za-z0-9]*"
+                        />
+                        <p class="text-xs text-gray-500 mt-1">Only letters and numbers.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">IBAN No</label>
+                        <input v-model="current.text" class="w-full rounded border px-3 py-2" placeholder="TRXXXXXXXXXXXXXXXXXXXX" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">IBAN Description</label>
+                        <input v-model="current.description" class="w-full rounded border px-3 py-2" placeholder="Description" />
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input id="isPrivate" type="checkbox" v-model="current.isPrivate" class="h-4 w-4" />
+                        <label for="isPrivate" class="text-sm">Private</label>
+                    </div>
+
+                    <div v-if="current.isPrivate">
+                        <label class="block text-sm font-medium mb-1">Password</label>
+                        <input v-model="current.password" type="password" class="w-full rounded border px-3 py-2" placeholder="Password" required />
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <button v-if="current.id === ''" type="button" @click="cancel" class="px-4 py-2 rounded border">Cancel</button>
+                        <button v-else type="button" @click="remove" class="px-4 py-2 rounded border border-red-300 text-red-700">Delete</button>
+                        <div class="flex-1"></div>
+                        <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import { mapActions,mapState } from 'vuex';
-    import { cloneDeep } from 'lodash';
+    const cloneDeep = (obj) => JSON.parse(JSON.stringify(obj));
 
     function reset() {
         return {
@@ -107,19 +94,9 @@
         name: "Ibans",
         data: () => ({
             dialog: false,
-            valid: false,
             showForm: false,
             selectedIndex: undefined,
             current: reset(),
-            formRules: {
-                text: [
-                    v => !!v || 'IBAN is required',
-                ],
-                handle: [
-                    v => !!v || 'IBAN handle is required',
-                    v => /^[A-Za-z0-9]*$/.test(v) || 'please only use a-z,A-Z or 0-9'
-                ],
-            },
         }),
         computed: {
             ...mapState(['ibans']),
@@ -151,7 +128,7 @@
                         return;
                     }
                     if(data.data.ibanDelete.ok){
-                        this.$delete(this.ibans,this.selectedIndex);
+                        this.ibans.splice(this.selectedIndex, 1);
                         this.selectedIndex = undefined;
                         this.dialog = false;
                         this.current = reset();
@@ -217,19 +194,4 @@
 </script>
 
 <style scoped>
-
-    .form-buttons {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .iban-item{
-        position: relative;
-        text-transform: lowercase;
-    }
-    .mdi-delete{
-        position: absolute !important;
-        right: 0;
-    }
-
 </style>

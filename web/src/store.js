@@ -1,9 +1,6 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import axios from 'axios'
 import router from './router'
-
-Vue.use(Vuex);
 
 const queryIbanUpdate = `
                     mutation ($id: ID!, $text: String!, $password: String!, $handle: String!, $isPrivate: Boolean!) {
@@ -25,7 +22,7 @@ const queryIbanCreate = `
                     }
                 `;
 
-export default new Vuex.Store({
+export default createStore({
     state: {
         token: null,
         error: null,

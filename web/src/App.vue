@@ -1,19 +1,14 @@
 <template>
-  <div data-app>
-    <v-overlay :value="!this.$store.state.isLoaded">
-      <v-progress-circular indeterminate size="64" />
-    </v-overlay>
+  <div>
     <Nav />
-    <div class="page">
-      <v-main>
-        <router-view />
-      </v-main>
+    <div class="container mx-auto p-4">
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import Nav from "./components/Nav";
+import Nav from "./components/Nav.vue";
 
 export default {
   name: "App",
@@ -26,6 +21,3 @@ export default {
   }),
 };
 </script>
-<style lang="scss">
-@import "~@/assets/styles/global.scss";
-</style>
