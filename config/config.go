@@ -1,20 +1,17 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
-
-	"github.com/goccy/go-yaml"
 )
 
 type DBConfig struct {
-	Name     string `env:"DB_NAME" default:"ibanim"`
-	Adapter  string `env:"DB_ADAPTER" default:"postgres"`
-	Host     string `env:"DB_HOST" default:"localhost"`
-	Port     string `env:"DB_PORT" default:"5432"`
-	User     string `env:"DB_USER" default:"ibanim"`
-	Password string `env:"DB_PASSWORD" default:"ibanim"`
+	Name     string
+	Adapter  string
+	Host     string
+	Port     string
+	User     string
+	Password string
 }
 
 type SMTPConfig struct {
@@ -25,21 +22,13 @@ type SMTPConfig struct {
 }
 
 type AppConfig struct {
-	Port  uint   `default:"7000" env:"PORT"`
-	Env   string `default:"localhost" env:"ENV"`
-	Debug bool   `default:"false" env:"DEBUG"`
-
-	// Session Timeout - minutes
-	Timeout uint `default:"60" env:"TIMEOUT"`
-
-	// Auth Max Refresh - minutes
-	MaxRefresh uint `default:"60" env:"MAX_REFRESH"`
-
-	// Auth Key
-	Key string `default:"12345678" env:"AUTH_KEY"`
-
-	// Realm name to display to the user.
-	Realm string `default:"ibanim zone" env:"REALM"`
+	Port       uint
+	Env        string
+	Debug      bool
+	Timeout    uint
+	MaxRefresh uint
+	Key        string
+	Realm      string
 }
 
 var Config = struct {
@@ -48,107 +37,57 @@ var Config = struct {
 	App  AppConfig
 }{}
 
+// init loads configuration strictly from environment variables.
+// Any missing values remain zero-values.
 func init() {
-	// Set sane defaults (previously provided by struct tags via configor)
-	Config.Db = DBConfig{
-		Name:     "ibanim",
-		Adapter:  "postgres",
-		Host:     "localhost",
-		Port:     "5432",
-		User:     "ibanim",
-		Password: "ibanim",
-	}
-	Config.App = AppConfig{
-		Port:       7000,
-		Env:        "localhost",
-		Debug:      false,
-		Timeout:    60,
-		MaxRefresh: 60,
-		Key:        "12345678",
-		Realm:      "ibanim zone",
-	}
-
-	// Load YAML files if present; missing files are ignored
-	for _, path := range []string{
-		"config/database.yml",
-		"config/smtp.yml",
-		"config/application.yml",
-	} {
-		if err := loadYAML(path); err != nil {
-			panic(err)
-		}
-	}
-
-	// Apply environment variable overrides
-	applyEnvOverrides()
-}
-
-// loadYAML unmarshals the YAML file into the global Config, updating only fields present in the file.
-func loadYAML(path string) error {
-	b, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
-		return fmt.Errorf("read %s: %w", path, err)
-	}
-	if err := yaml.Unmarshal(b, &Config); err != nil {
-		return fmt.Errorf("parse %s: %w", path, err)
-	}
-	return nil
-}
-
-// applyEnvOverrides reads environment variables and overrides config fields
-// using the current naming convention (UPPER_SNAKE_CASE).
-func applyEnvOverrides() {
 	// DB
-	if v, ok := os.LookupEnv("DB_NAME"); ok {
+	if v := os.Getenv("DB_NAME"); v != "" {
 		Config.Db.Name = v
 	}
-	if v, ok := os.LookupEnv("DB_ADAPTER"); ok {
+	if v := os.Getenv("DB_ADAPTER"); v != "" {
 		Config.Db.Adapter = v
 	}
-	if v, ok := os.LookupEnv("DB_HOST"); ok {
+	if v := os.Getenv("DB_HOST"); v != "" {
 		Config.Db.Host = v
 	}
-	if v, ok := os.LookupEnv("DB_PORT"); ok {
+	if v := os.Getenv("DB_PORT"); v != "" {
 		Config.Db.Port = v
 	}
-	if v, ok := os.LookupEnv("DB_USER"); ok {
+	if v := os.Getenv("DB_USER"); v != "" {
 		Config.Db.User = v
 	}
-	if v, ok := os.LookupEnv("DB_PASSWORD"); ok {
+	if v := os.Getenv("DB_PASSWORD"); v != "" {
 		Config.Db.Password = v
 	}
 
 	// App
-	if v, ok := os.LookupEnv("PORT"); ok {
+	if v := os.Getenv("PORT"); v != "" {
 		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
 			Config.App.Port = uint(n)
 		}
 	}
-	if v, ok := os.LookupEnv("ENV"); ok {
+	if v := os.Getenv("ENV"); v != "" {
 		Config.App.Env = v
 	}
-	if v, ok := os.LookupEnv("DEBUG"); ok {
+	if v := os.Getenv("DEBUG"); v != "" {
 		if b, err := strconv.ParseBool(v); err == nil {
 			Config.App.Debug = b
 		}
 	}
-	if v, ok := os.LookupEnv("TIMEOUT"); ok {
+	if v := os.Getenv("TIMEOUT"); v != "" {
 		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
 			Config.App.Timeout = uint(n)
 		}
 	}
-	if v, ok := os.LookupEnv("MAX_REFRESH"); ok {
+	if v := os.Getenv("MAX_REFRESH"); v != "" {
 		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
 			Config.App.MaxRefresh = uint(n)
 		}
 	}
-	if v, ok := os.LookupEnv("AUTH_KEY"); ok {
+	if v := os.Getenv("AUTH_KEY"); v != "" {
 		Config.App.Key = v
 	}
-	if v, ok := os.LookupEnv("REALM"); ok {
+	if v := os.Getenv("REALM"); v != "" {
 		Config.App.Realm = v
 	}
 }

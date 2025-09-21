@@ -10,3 +10,5 @@ config/application.yml
 .idea/
 web/node_modules
 ibanim
+.DS_Store
+*.log

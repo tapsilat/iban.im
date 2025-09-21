@@ -35,7 +35,6 @@ func main() {
 
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.Static("/static", "static")
 
 	if sqlDB, err := config.DB.DB(); err == nil {
 		defer sqlDB.Close()

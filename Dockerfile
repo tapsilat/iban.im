@@ -1,42 +1,30 @@
-# Builder Stage
-FROM golang:1.25 as builder
+FROM golang:1.25-alpine AS builder
 
-WORKDIR /usr/app
+RUN apk add --no-cache upx
+RUN apk --no-cache add tzdata
 
-# Proje dosyalarını kopyala
+WORKDIR /src/ibanim
+
 COPY . .
 
-# Uygulamayı derle
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ibanim .
+RUN go mod download
 
-# Migrations'ı derle
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o migrate ./migrations/
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o ibanim main.go
+RUN upx ibanim
 
-# Multi-stage build
 
-# Alpine Stage (minimal imaj)
-FROM alpine:latest
+FROM scratch
 
-RUN apk --no-cache add ca-certificates
+# take env from build args
+ARG VERSION
+ENV APP_VERSION=$VERSION
 
-ENV PATH /root
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-WORKDIR /root/
+WORKDIR /bin/ibanim
 
-# Builder aşamasından derlenmiş ikili dosyaları al
-COPY --from=builder /usr/app/ibanim .
-COPY --from=builder /usr/app/migrate .
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /src/ibanim/ibanim .
 
-# Konfigürasyon ve şablon dosyalarını kopyala
-COPY --from=builder /usr/app/config /root/config
-COPY --from=builder /usr/app/templates /root/templates
 
-# Örnek konfigürasyon dosyalarını kopyala
-COPY --from=builder /usr/app/config/application.yml /root/config/application.yml
-COPY --from=builder /usr/app/config/smtp.yml /root/config/smtp.yml
-COPY --from=builder /usr/app/config/database.yml /root/config/database.yml
-
-EXPOSE 8080
-
-# Başlatma komutunu belirt
-CMD ["./ibanim"]
+CMD [ "./ibanim" ]
