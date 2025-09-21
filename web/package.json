@@ -9,17 +9,17 @@
     "preview": "vite preview --port 4881"
   },
   "dependencies": {
-    "axios": "^0.24.0",
-    "tesseract.js": "^2.1.5",
+    "axios": "^1.12.2",
+    "tesseract.js": "^6.0.1",
     "vue": "^3.4.38",
     "vue-router": "^4.3.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue": "^6.0.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13",
-    "vite": "^5.4.8"
+    "tailwindcss": "^4.1.13",
+    "vite": "^7.1.6"
   }
 }
