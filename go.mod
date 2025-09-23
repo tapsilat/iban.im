@@ -1,6 +1,6 @@
 module github.com/tapsilat/iban.im
 
-go 1.25.1
+go 1.25
 
 require (
 	github.com/appleboy/gin-jwt/v2 v2.10.3
