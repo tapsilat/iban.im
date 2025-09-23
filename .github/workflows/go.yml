@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build - Go ${{ matrix.go }}
+    name: Build - Go
     runs-on: ubuntu-latest
     steps:
 
@@ -15,7 +15,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v6
         with:
-          go-version: ${{ matrix.go }}
+          go-version: "^1.25"
 
       - name: Backend Dependency Install
         run: go mod download
