@@ -19,8 +19,8 @@ jobs:
 
       - name: Backend Dependency Install
         run: go mod download
-        working-directory: ./backend
+        working-directory: ./
 
       - name: Build
-        working-directory: ./backend
+        working-directory: ./
         run: go build -v ./...
