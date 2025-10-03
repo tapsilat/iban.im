@@ -24,9 +24,13 @@ import (
 const identityKey = "UserID"
 
 func main() {
+	cfg, err := config.GetConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
 
 	// Initialize database and run AutoMigrate at startup
-	config.InitDB()
+	config.InitDB(cfg)
 
 	router := gin.Default()
 	router.Use(func(c *gin.Context) {
@@ -102,6 +106,9 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Config.App.Port), router))
+	err = http.ListenAndServe(fmt.Sprintf(":%s", cfg.App.Port), router)
+	if err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 
 }

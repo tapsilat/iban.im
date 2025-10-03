@@ -1,93 +1,77 @@
 package config
 
 import (
+	"log"
 	"os"
-	"strconv"
+	"sync"
+
+	"github.com/caarlos0/env/v11"
+	"github.com/joho/godotenv"
 )
 
-type DBConfig struct {
-	Name     string
-	Adapter  string
-	Host     string
-	Port     string
-	User     string
-	Password string
+type DBase struct {
+	Name     string `env:"DB_NAME" default:"ibanim"`
+	Adapter  string `env:"DB_ADAPTER" default:"postgres"`
+	Host     string `env:"DB_HOST" default:"localhost"`
+	Port     string `env:"DB_PORT" default:"5432"`
+	User     string `env:"DB_USER" default:"ibanim"`
+	Password string `env:"DB_PASSWORD" default:"ibanim"`
 }
 
-type SMTPConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
+type SMTP struct {
+	Host     string `env:"SMTP_HOST" envDefault:"localhost"`
+	Port     string `env:"SMTP_PORT" envDefault:"2525"`
+	User     string `env:"SMTP_USER"`
+	Password string `env:"SMTP_PASSWORD"`
 }
 
-type AppConfig struct {
-	Port       uint
-	Env        string
-	Debug      bool
-	Timeout    uint
-	MaxRefresh uint
-	Key        string
-	Realm      string
+type App struct {
+	Port       string `env:"APP_PORT" envDefault:"8080"`
+	Env        string `env:"APP_ENV" envDefault:"development"`
+	Debug      bool   `env:"APP_DEBUG" envDefault:"false"`
+	Timeout    uint   `env:"APP_TIMEOUT" envDefault:"5"`
+	MaxRefresh uint   `env:"APP_MAX_REFRESH" envDefault:"5"`
+	Key        string `env:"APP_KEY"`
+	Realm      string `env:"APP_REALM"`
 }
 
-var Config = struct {
-	Db   DBConfig
-	Smtp SMTPConfig
-	App  AppConfig
-}{}
+type Config struct {
+	DB   DBase
+	Smtp SMTP
+	App  App
+}
 
-// init loads configuration strictly from environment variables.
-// Any missing values remain zero-values.
-func init() {
-	// DB
-	if v := os.Getenv("DB_NAME"); v != "" {
-		Config.Db.Name = v
-	}
-	if v := os.Getenv("DB_ADAPTER"); v != "" {
-		Config.Db.Adapter = v
-	}
-	if v := os.Getenv("DB_HOST"); v != "" {
-		Config.Db.Host = v
-	}
-	if v := os.Getenv("DB_PORT"); v != "" {
-		Config.Db.Port = v
-	}
-	if v := os.Getenv("DB_USER"); v != "" {
-		Config.Db.User = v
-	}
-	if v := os.Getenv("DB_PASSWORD"); v != "" {
-		Config.Db.Password = v
+var (
+	globalConfig *Config
+	configOnce   sync.Once
+)
+
+func GetGlobalConfig() *Config {
+	configOnce.Do(func() {
+		var err error
+		globalConfig, err = GetConfig()
+		if err != nil {
+			log.Fatal(err)
+		}
+	})
+	return globalConfig
+}
+
+func GetConfig() (*Config, error) {
+	envFile := ".env"
+	if env := os.Getenv("ENV"); env != "" {
+		envFile = ".env." + env
 	}
 
-	// App
-	if v := os.Getenv("PORT"); v != "" {
-		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
-			Config.App.Port = uint(n)
-		}
+	if err := godotenv.Load(envFile); err != nil {
+		// Not a critical error, continue with environment variables only
 	}
-	if v := os.Getenv("ENV"); v != "" {
-		Config.App.Env = v
+
+	cfg := &Config{}
+
+	if err := env.Parse(cfg); err != nil {
+		return nil, err
 	}
-	if v := os.Getenv("DEBUG"); v != "" {
-		if b, err := strconv.ParseBool(v); err == nil {
-			Config.App.Debug = b
-		}
-	}
-	if v := os.Getenv("TIMEOUT"); v != "" {
-		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
-			Config.App.Timeout = uint(n)
-		}
-	}
-	if v := os.Getenv("MAX_REFRESH"); v != "" {
-		if n, err := strconv.ParseUint(v, 10, 64); err == nil {
-			Config.App.MaxRefresh = uint(n)
-		}
-	}
-	if v := os.Getenv("AUTH_KEY"); v != "" {
-		Config.App.Key = v
-	}
-	if v := os.Getenv("REALM"); v != "" {
-		Config.App.Realm = v
-	}
+
+	return cfg, nil
 }

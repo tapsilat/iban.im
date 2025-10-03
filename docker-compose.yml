@@ -3,10 +3,12 @@ services:
     image: postgres:18
     restart: always
     container_name: postgres_db
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
@@ -16,13 +18,10 @@ services:
     build: .
     restart: always
     container_name: go_app
+    env_file:
+      - .env
     environment:
-      - DB_ADAPTER=postgres
       - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=myuser
-      - DB_PASSWORD=mypassword
-      - DB_NAME=mydb
     depends_on:
       - db
     ports:

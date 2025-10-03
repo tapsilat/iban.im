@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/tapsilat/iban.im/config"
@@ -32,6 +32,10 @@ type Payload struct {
 	Password string `json:"password"`
 }
 
+type loginResponse struct {
+	Token string `json:"token"`
+}
+
 func loginJwtToken(userMail, userPass *string) (string, error) {
 
 	data := Payload{
@@ -47,7 +51,7 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 
 	body := bytes.NewReader(payloadBytes)
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%d/api/login", config.Config.App.Port), body)
+	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%s/api/login", config.GetGlobalConfig().App.Port), body)
 	if err != nil {
 		// handle err
 
@@ -58,25 +62,24 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		// handle err
-
 		return "", err
 
 	}
-	fmt.Printf("resp data: %+v\n", resp.Body)
-	respbody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-
-		return "", err
-	}
-
-	m := make(map[string]interface{})
-	errUnMarshal := json.Unmarshal(respbody, &m)
-	if errUnMarshal != nil {
-
-		return "", errUnMarshal
-	}
-
 	defer resp.Body.Close()
-	token := fmt.Sprintf("%s", m["token"])
-	return token, err
+
+	fmt.Printf("resp data: %+v\n", resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var res loginResponse
+	if err = json.Unmarshal(respBody, &res); err != nil {
+		return "", fmt.Errorf("failed to umarshal: %s", err)
+	}
+	if res.Token == "" {
+		return "", fmt.Errorf("failed to login")
+	}
+
+	return res.Token, nil
 }
