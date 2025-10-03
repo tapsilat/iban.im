@@ -20,11 +20,12 @@ type login struct {
 
 // the jwt middleware
 func AuthMiddleware() (*jwt.GinJWTMiddleware, error) {
+	cfg := config.GetGlobalConfig()
 	return jwt.New(&jwt.GinJWTMiddleware{
-		Realm:       config.Config.App.Realm,
-		Key:         []byte(config.Config.App.Key),
-		Timeout:     time.Minute * time.Duration(config.Config.App.Timeout),
-		MaxRefresh:  time.Minute * time.Duration(config.Config.App.MaxRefresh),
+		Realm:       cfg.App.Realm,
+		Key:         []byte(cfg.App.Key),
+		Timeout:     time.Minute * time.Duration(cfg.App.Timeout),
+		MaxRefresh:  time.Minute * time.Duration(cfg.App.MaxRefresh),
 		IdentityKey: identityKey,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			// fmt.Printf("payload data: %+v\n",data)

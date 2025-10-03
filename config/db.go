@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/tapsilat/iban.im/model"
@@ -16,34 +15,29 @@ import (
 
 var DB *gorm.DB
 
-func InitDB() {
+func InitDB(cfg *Config) {
 	var err error
-
-	adapter := os.Getenv("DB_ADAPTER")
-	if adapter == "" {
-		adapter = "postgres"
-	}
 
 	// Build DSN and open using GORM v2 drivers
 	var dsn string
 	var dialector gorm.Dialector
-	if adapter == "mysql" {
+	if cfg.DB.Adapter == "mysql" {
 		dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True&loc=Local",
-			os.Getenv("DB_USER"),
-			os.Getenv("DB_PASSWORD"),
-			os.Getenv("DB_HOST"),
-			os.Getenv("DB_PORT"),
-			os.Getenv("DB_NAME"),
+			cfg.DB.User,
+			cfg.DB.Password,
+			cfg.DB.Host,
+			cfg.DB.Port,
+			cfg.DB.Name,
 		)
 		dialector = mysql.Open(dsn)
-	} else if adapter == "postgres" {
+	} else if cfg.DB.Adapter == "postgres" {
 		// Postgres driver supports URL dsn
 		dsn = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-			os.Getenv("DB_USER"),
-			os.Getenv("DB_PASSWORD"),
-			os.Getenv("DB_HOST"),
-			os.Getenv("DB_PORT"),
-			os.Getenv("DB_NAME"),
+			cfg.DB.User,
+			cfg.DB.Password,
+			cfg.DB.Host,
+			cfg.DB.Port,
+			cfg.DB.Name,
 		)
 		dialector = postgres.Open(dsn)
 	} else {

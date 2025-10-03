@@ -25,6 +25,7 @@ WORKDIR /bin/ibanim
 
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /src/ibanim/ibanim .
-
+COPY --from=builder /src/ibanim/templates ./templates
+COPY --from=builder /src/ibanim/.env ./.env
 
 CMD [ "./ibanim" ]
