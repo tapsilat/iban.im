@@ -814,10 +814,10 @@ vite@^7.1.10:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vue-router@^4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.6.2.tgz#88dc6f9f5b4cd4264ea34a6733298cd00fef38a5"
-  integrity sha512-my83mxQKXyCms9EegBXZldehOihxBjgSjZqrZwgg4vBacNGl0oBCO+xT//wgOYpLV1RW93ZfqxrjTozd+82nbA==
+vue-router@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.6.3.tgz#52a40a231b910806438a8203c065a411fd3f1faa"
+  integrity sha512-ARBedLm9YlbvQomnmq91Os7ck6efydTSpRP3nuOKCvgJOHNrhRoJDSKtee8kcL1Vf7nz6U+PMBL+hTvR3bTVQg==
   dependencies:
     "@vue/devtools-api" "^6.6.4"
 
