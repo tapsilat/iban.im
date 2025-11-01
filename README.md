@@ -33,7 +33,23 @@ Shorten IBAN numbers with url such as :
 
 ## How to Run
 
-### Initialize DB
+### Docker Development (Recommended for Local Development)
+
+The easiest way to get started with development is using Docker with hot reloading:
+
+```bash
+# With PostgreSQL (recommended)
+docker compose -f docker-compose.dev.yml up
+
+# With SQLite (lightweight)
+docker compose -f docker-compose.dev.sqlite.yml up
+```
+
+See [DOCKER_DEV.md](DOCKER_DEV.md) for complete Docker development documentation.
+
+### Manual Setup
+
+#### Initialize DB
 
 1. Create a database
 
