@@ -14,4 +14,4 @@ iban-app
 .DS_Store
 *.log
 *.db
-data/
+data/*.sqlite

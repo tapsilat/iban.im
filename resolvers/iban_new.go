@@ -41,6 +41,9 @@ func (r *Resolvers) IbanNew(ctx context.Context, args IbanNewMutationArgs) (*Iba
 	}
 
 	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID: uint(userid), IsPrivate: args.IsPrivate}
+	if args.Description != nil {
+		IbanNew.Description = *args.Description
+	}
 	if args.IsPrivate {
 		IbanNew.HashPassword()
 	}
@@ -68,7 +71,7 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool {
 
 type IbanNewMutationArgs struct {
 	Text        string
-	Description string
+	Description *string
 	Password    string
 	Handle      string
 	IsPrivate   bool
