@@ -1,18 +1,15 @@
-FROM golang:1.25-alpine
-
-# Install air for hot reloading
-RUN go install github.com/air-verse/air@latest
-
-# Install build dependencies
-RUN apk add --no-cache gcc musl-dev
+FROM golang:1.25
 
 WORKDIR /app
 
 # Copy go mod files
 COPY go.mod go.sum ./
 
-# Download dependencies
+# Download dependencies (will be cached in layer)
 RUN go mod download
+
+# Install air for hot reloading
+RUN go install github.com/air-verse/air@latest
 
 # Copy the rest of the code
 COPY . .
