@@ -12,3 +12,5 @@ web/node_modules
 ibanim
 .DS_Store
 *.log
+*.db
+data/
