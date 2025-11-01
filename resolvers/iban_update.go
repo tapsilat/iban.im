@@ -56,7 +56,9 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 
 	iban.Handle = strings.ToLower(args.Handle)
 	iban.Text = args.Text
-	iban.Description = args.Description
+	if args.Description != nil {
+		iban.Description = *args.Description
+	}
 
 	if args.IsPrivate && args.Password != "" {
 		iban.IsPrivate = true
@@ -73,7 +75,7 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 
 type IbanUpdateMutationArgs struct {
 	Text        string
-	Description string
+	Description *string
 	Password    string
 	Handle      string
 	Id          graphql.ID
