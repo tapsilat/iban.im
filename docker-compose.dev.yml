@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:18
+    container_name: ibanim_postgres_dev
+    environment:
+      - POSTGRES_USER=ibanim
+      - POSTGRES_PASSWORD=ibanim
+      - POSTGRES_DB=ibanim
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ibanim"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ibanim_dev
+    environment:
+      - DB_ADAPTER=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=ibanim
+      - DB_USER=ibanim
+      - DB_PASSWORD=ibanim
+      - APP_PORT=8080
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APP_KEY=dev-secret-key-12345678
+      - APP_REALM=ibanim zone
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - /app/tmp
+
+volumes:
+  postgres_dev_data:

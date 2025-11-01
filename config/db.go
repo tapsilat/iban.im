@@ -9,6 +9,7 @@ import (
 	"github.com/tapsilat/iban.im/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -40,6 +41,10 @@ func InitDB(cfg *Config) {
 			cfg.DB.Name,
 		)
 		dialector = postgres.Open(dsn)
+	} else if cfg.DB.Adapter == "sqlite" {
+		// SQLite driver - DB.Name is the file path
+		dsn = cfg.DB.Name
+		dialector = sqlite.Open(dsn)
 	} else {
 		panic(errors.New("unsupported database adapter"))
 	}

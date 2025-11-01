@@ -1,0 +1,23 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ibanim_dev_sqlite
+    environment:
+      - DB_ADAPTER=sqlite
+      - DB_NAME=/app/data/ibanim.db
+      - APP_PORT=8080
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APP_KEY=dev-secret-key-12345678
+      - APP_REALM=ibanim zone
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - /app/tmp
+      - sqlite_dev_data:/app/data
+
+volumes:
+  sqlite_dev_data:
