@@ -44,10 +44,10 @@ func (r *Resolvers) DeleteProfile(ctx context.Context, args deleteProfileMutatio
 		return &DeleteProfileResponse{Status: false, Msg: &msg, MsgText: nil}, err
 	}
 
-	// Log the deletion for auditing
-	log.Printf("User profile deleted: UserID=%d, Email=%s, Handle=%s", user.UserID, user.Email, user.Handle)
+	// Log the deletion for auditing (UserID and Handle only for privacy)
+	log.Printf("User profile deleted: UserID=%d, Handle=%s", user.UserID, user.Handle)
 
-	successMsg := "Profile deleted successfully. Your account and all associated data have been removed."
+	successMsg := "Profile deleted successfully. Your account has been deactivated and is no longer accessible."
 	return &DeleteProfileResponse{Status: true, Msg: nil, MsgText: &successMsg}, nil
 }
 
