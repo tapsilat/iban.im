@@ -12,9 +12,19 @@ Shorten IBAN numbers with url such as :
 
 ## Stacks
 
+### Backend
 - Go
 - GraphQL : [graphql-go](https://github.com/graph-gophers/graphql-go)
 - ORM : [gorm](https://gorm.io)
+
+### Frontend
+- Vue 3
+- Vite
+- Tailwind CSS v4
+- Vue Router
+- Vuex
+
+The frontend is built and embedded into the Go binary as static files, creating a single deployable artifact.
 
 
 ## Features
@@ -118,16 +128,72 @@ $ docker run --rm ibanim migrate
 
 This will generate the `users` table in the database as per the User Model declared in `./model/user.go`
 
-### Run the server
+### Build and Run the server
+
+The frontend is embedded into the Go binary. You must build the frontend first, then build the Go application.
+
+#### Option 1: Using Makefile (Recommended)
 
 ```shell
-$ go run server.go
+$ make build
+$ ./iban.im
 ```
+
+This will automatically build the frontend and copy it to `static/dist/` before building the Go binary.
+
+#### Option 2: Manual Build
+
+```shell
+# Build frontend
+$ cd web
+$ npm install
+$ npm run build
+$ cd ..
+
+# Copy frontend to static package
+$ cp -r web/dist static/
+
+# Build Go binary
+$ go build
+$ ./iban.im
+```
+
+The server will serve both the API (GraphQL) and the frontend (Vue.js SPA).
 
 or with Docker
 
 ```
 $ docker run --rm -d -p 8080:8080 ibanim
+```
+
+## Frontend Development
+
+The frontend is a Vue 3 single-page application (SPA) with Tailwind CSS. For detailed information about building and embedding the frontend, see [FRONTEND_BUILD.md](FRONTEND_BUILD.md).
+
+### Development Mode
+
+For frontend development with hot-reload:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+The development server runs on http://localhost:4881 and proxies API requests to http://localhost:4880.
+
+### Building the Frontend
+
+```bash
+cd web
+npm run build
+cp -r dist ../static/
+```
+
+Then rebuild the Go binary to include the updated frontend:
+
+```bash
+go build
 ```
 
 ### GraphQL Playground

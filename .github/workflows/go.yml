@@ -17,6 +17,24 @@ jobs:
         with:
           go-version: "^1.25"
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Frontend Dependency Install
+        run: npm install
+        working-directory: ./web
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: ./web
+
+      - name: Copy Frontend to Static
+        run: |
+          mkdir -p static/dist
+          cp -r web/dist/* static/dist/
+
       - name: Backend Dependency Install
         run: go mod download
         working-directory: ./

@@ -3,6 +3,7 @@ package main // import "github.com/tapsilat/iban.im
 import (
 	"context"
 	"encoding/json"
+	"io/fs"
 	"log"
 	"net/http"
 
@@ -13,6 +14,7 @@ import (
 
 	"github.com/tapsilat/iban.im/resolvers"
 	"github.com/tapsilat/iban.im/schema"
+	"github.com/tapsilat/iban.im/static"
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 
@@ -39,6 +41,25 @@ func main() {
 
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
+
+	// Serve embedded static files from the Vue.js frontend
+	staticFS, err := static.GetFS()
+	if err != nil {
+		log.Fatalf("Failed to get embedded static files: %v", err)
+	}
+	
+	// Cache index.html in memory for efficient serving
+	indexHTML, err := fs.ReadFile(staticFS, "index.html")
+	if err != nil {
+		log.Fatalf("Failed to read index.html from embedded files: %v", err)
+	}
+	
+	// Serve assets directory from embedded filesystem
+	assetsFS, err := fs.Sub(staticFS, "assets")
+	if err != nil {
+		log.Fatalf("Failed to get assets subdirectory: %v", err)
+	}
+	router.StaticFS("/assets", http.FS(assetsFS))
 
 	if sqlDB, err := config.DB.DB(); err == nil {
 		defer sqlDB.Close()
@@ -102,8 +123,11 @@ func main() {
 		c.JSON(200, response)
 	})
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+	// Serve the Vue.js SPA for all other routes
+	// This enables client-side routing for the frontend
+	router.NoRoute(func(c *gin.Context) {
+		// Serve cached index.html
+		c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
 	})
 
 	err = http.ListenAndServe(fmt.Sprintf(":%s", cfg.App.Port), router)
