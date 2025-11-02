@@ -40,7 +40,7 @@ func GetIbanByHandles(c *gin.Context) {
 	})
 }
 
-// RenderIbanPage renders a simple HTML page displaying the IBAN
+// RenderIbanPage renders a simple HTML page displaying the IBAN or returns JSON based on Accept header
 func RenderIbanPage(c *gin.Context) {
 	userHandle := c.Param("userHandle")
 	ibanHandle := c.Param("ibanHandle")
@@ -48,17 +48,44 @@ func RenderIbanPage(c *gin.Context) {
 	// Find user by handle
 	var user model.User
 	if err := config.DB.Where("handle = ?", userHandle).First(&user).Error; err != nil {
-		c.HTML(http.StatusNotFound, "error.tmpl.html", gin.H{
-			"error": "User not found",
-		})
+		// Check if client wants JSON
+		if c.GetHeader("Accept") == "application/json" || c.Query("format") == "json" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "User not found",
+			})
+		} else {
+			c.HTML(http.StatusNotFound, "error.tmpl.html", gin.H{
+				"error": "User not found",
+			})
+		}
 		return
 	}
 
 	// Find IBAN by handle and owner
 	var iban model.Iban
 	if err := config.DB.Where("owner_id = ? AND handle = ? AND is_private = false", user.UserID, ibanHandle).First(&iban).Error; err != nil {
-		c.HTML(http.StatusNotFound, "error.tmpl.html", gin.H{
-			"error": "IBAN not found or is private",
+		// Check if client wants JSON
+		if c.GetHeader("Accept") == "application/json" || c.Query("format") == "json" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "IBAN not found or is private",
+			})
+		} else {
+			c.HTML(http.StatusNotFound, "error.tmpl.html", gin.H{
+				"error": "IBAN not found or is private",
+			})
+		}
+		return
+	}
+
+	// Check if client wants JSON response
+	if c.GetHeader("Accept") == "application/json" || c.Query("format") == "json" {
+		c.JSON(http.StatusOK, gin.H{
+			"userHandle":  userHandle,
+			"ibanHandle":  ibanHandle,
+			"iban":        iban.Text,
+			"description": iban.Description,
+			"firstName":   user.FirstName,
+			"lastName":    user.LastName,
 		})
 		return
 	}

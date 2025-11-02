@@ -168,12 +168,28 @@ func TestRenderIbanPage(t *testing.T) {
 		name           string
 		userHandle     string
 		ibanHandle     string
+		acceptHeader   string
+		queryParam     string
 		expectedStatus int
 	}{
 		{
 			name:           "Valid public IBAN",
 			userHandle:     "testuser",
 			ibanHandle:     "testiban",
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "Valid public IBAN with JSON Accept header",
+			userHandle:     "testuser",
+			ibanHandle:     "testiban",
+			acceptHeader:   "application/json",
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "Valid public IBAN with JSON query parameter",
+			userHandle:     "testuser",
+			ibanHandle:     "testiban",
+			queryParam:     "json",
 			expectedStatus: http.StatusOK,
 		},
 		{
@@ -211,6 +227,22 @@ func TestRenderIbanPage(t *testing.T) {
 			c.Params = gin.Params{
 				{Key: "userHandle", Value: tt.userHandle},
 				{Key: "ibanHandle", Value: tt.ibanHandle},
+			}
+
+			// Set Accept header if specified
+			if tt.acceptHeader != "" {
+				c.Request, _ = http.NewRequest("GET", "/", nil)
+				c.Request.Header.Set("Accept", tt.acceptHeader)
+			}
+
+			// Set query parameter if specified
+			if tt.queryParam != "" {
+				c.Request, _ = http.NewRequest("GET", "/?format="+tt.queryParam, nil)
+			}
+
+			// If no request was created, create a default one
+			if c.Request == nil {
+				c.Request, _ = http.NewRequest("GET", "/", nil)
 			}
 
 			// Call handler
