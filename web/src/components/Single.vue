@@ -3,13 +3,18 @@
         <div class="text-center mb-4">
             <h1 class="text-xl font-semibold">{{ name }}</h1>
         </div>
-        <ul class="space-y-2">
-            <li v-for="(item,i) in $store.state.ibans" :key="i">
-                <router-link class="inline-block px-3 py-2 rounded bg-gray-100" :to="`/${profile.handle}/${item.handle}`">
-                    {{ item.handle }}
-                </router-link>
-            </li>
-        </ul>
+        <div v-if="ibans && ibans.length > 0">
+            <ul class="space-y-2">
+                <li v-for="(item,i) in ibans" :key="i">
+                    <router-link class="inline-block px-3 py-2 rounded bg-gray-100 hover:bg-gray-200" :to="`/${profile.handle}/${item.handle}`">
+                        {{ item.handle }}
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+        <div v-else class="text-center text-gray-500">
+            No public IBANs available.
+        </div>
     </div>
 </template>
 
