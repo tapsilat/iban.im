@@ -123,6 +123,9 @@ func main() {
 		c.JSON(200, response)
 	})
 
+	// Route for serving IBAN addresses at /:userHandle/:ibanHandle
+	router.GET("/:userHandle/:ibanHandle", handler.RenderIbanPage)
+
 	// Serve the Vue.js SPA for all other routes
 	// This enables client-side routing for the frontend
 	router.NoRoute(func(c *gin.Context) {
