@@ -7,7 +7,7 @@ import (
 )
 
 func TestSignIn(t *testing.T) {
-	resolver, db, cleanup := setupTestResolverWithDB(t)
+	_, db, cleanup := setupTestResolverWithDB(t)
 	defer cleanup()
 
 	// Create a test user
@@ -44,6 +44,4 @@ func TestSignIn(t *testing.T) {
 	if existingUser.ComparePassword("wrongpassword") {
 		t.Error("Wrong password should not match")
 	}
-
-	_ = resolver // Use resolver to avoid unused variable error
 }
