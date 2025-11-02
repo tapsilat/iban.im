@@ -12,6 +12,8 @@ The frontend is built using Vue 3 + Vite + Tailwind CSS and embedded into the Go
 
 ## Build Process
 
+**Important**: The `static/dist/` directory is not tracked in git. You must build the frontend and copy it to `static/dist/` before building the Go binary.
+
 ### 1. Install Dependencies
 ```bash
 cd web
@@ -34,6 +36,8 @@ cp -r web/dist static/
 The `static/dist` directory contains:
 - `index.html` - The main HTML file
 - `assets/` - JavaScript and CSS bundles
+
+**Note**: This directory is ignored by git (`.gitignore`) as it contains build artifacts.
 
 ### 4. Build the Go Binary
 ```bash
@@ -79,6 +83,19 @@ This starts a development server on http://localhost:4881 with hot-reload.
 3. Frontend proxies API requests to the backend
 
 ## Production Build
+
+### Using Makefile (Recommended)
+```bash
+make build
+```
+
+This single command will:
+1. Install frontend dependencies
+2. Build the frontend
+3. Copy files to `static/dist/`
+4. Build the Go binary
+
+### Manual Build
 ```bash
 # Build frontend
 cd web

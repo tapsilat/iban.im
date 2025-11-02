@@ -10,6 +10,7 @@ config/application.yml
 .idea/
 web/node_modules
 web/dist
+static/dist
 ibanim
 iban-app
 iban.im

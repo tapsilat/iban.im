@@ -130,9 +130,30 @@ This will generate the `users` table in the database as per the User Model decla
 
 ### Build and Run the server
 
-The frontend is embedded into the Go binary, so you only need to build and run the Go application:
+The frontend is embedded into the Go binary. You must build the frontend first, then build the Go application.
+
+#### Option 1: Using Makefile (Recommended)
 
 ```shell
+$ make build
+$ ./iban.im
+```
+
+This will automatically build the frontend and copy it to `static/dist/` before building the Go binary.
+
+#### Option 2: Manual Build
+
+```shell
+# Build frontend
+$ cd web
+$ npm install
+$ npm run build
+$ cd ..
+
+# Copy frontend to static package
+$ cp -r web/dist static/
+
+# Build Go binary
 $ go build
 $ ./iban.im
 ```
