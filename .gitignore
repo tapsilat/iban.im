@@ -10,7 +10,8 @@ config/application.yml
 .idea/
 web/node_modules
 ibanim
+iban-app
 .DS_Store
 *.log
 *.db
-data/
+data/*.sqlite

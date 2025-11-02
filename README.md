@@ -22,7 +22,7 @@ Shorten IBAN numbers with url such as :
 - [x] New users should Sign Up & Sign In
 - [x] Change a Password of user
 - [x] Change a Profile of user
-- [ ] Delete a Profile of user
+- [x] Delete a Profile of user
 - [x] Get Profile of user
 - [x] New IBAN add for user
 - [x] Update IBAN  for user
@@ -265,6 +265,18 @@ mutation {
       createdAt
       updatedAt
     }
+  }
+}
+```
+
+### Delete a Profile
+
+```graphql
+mutation {
+  deleteProfile(confirmPassword: "your_current_password") {
+    ok
+    error
+    message
   }
 }
 ```

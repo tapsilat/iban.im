@@ -31,8 +31,8 @@ func (r *IbanResponse) Text() string {
 }
 
 // Description for IbanResponse
-func (r *IbanResponse) Description() string {
-	return r.i.Description
+func (r *IbanResponse) Description() *string {
+	return &r.i.Description
 }
 
 // Password for IbanResponse
