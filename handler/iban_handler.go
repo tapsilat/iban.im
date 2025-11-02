@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tapsilat/iban.im/config"
@@ -116,7 +117,7 @@ func IsValidRoute(path string) bool {
 	}
 	
 	for _, prefix := range excludedPrefixes {
-		if len(path) >= len(prefix) && path[:len(prefix)] == prefix {
+		if strings.HasPrefix(path, prefix) {
 			return false
 		}
 	}

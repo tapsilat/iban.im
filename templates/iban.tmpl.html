@@ -34,11 +34,13 @@
 
           <div class="mt-6 pt-6 border-t border-slate-200">
             <button 
+              id="copyButton"
               onclick="copyToClipboard('{{.iban}}')" 
               class="bg-sky-600 text-white px-6 py-2 rounded-md hover:bg-sky-700 transition-colors"
             >
               Copy IBAN
             </button>
+            <span id="copyFeedback" class="ml-3 text-green-600 font-medium hidden">✓ Copied!</span>
           </div>
         </div>
       </div>
@@ -47,9 +49,17 @@
     <script>
       function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
-          alert('IBAN copied to clipboard!');
+          // Show feedback
+          const feedback = document.getElementById('copyFeedback');
+          feedback.classList.remove('hidden');
+          
+          // Hide after 2 seconds
+          setTimeout(function() {
+            feedback.classList.add('hidden');
+          }, 2000);
         }, function(err) {
-          console.error('Could not copy text: ', err);
+          // Fallback to alert if clipboard API fails
+          alert('Could not copy IBAN. Error: ' + err);
         });
       }
     </script>
