@@ -1,0 +1,16 @@
+<html>
+  {{template "header.tmpl.html"}}
+  <body class="bg-slate-50 min-h-screen">
+    {{template "nav.tmpl.html"}}
+
+    <main class="mx-auto max-w-5xl px-4 py-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-semibold mb-4 text-red-600">Error</h1>
+        <p class="text-lg text-slate-600">{{.error}}</p>
+        <div class="mt-6">
+          <a href="/" class="text-sky-600 hover:text-sky-700 font-medium">← Back to Home</a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
