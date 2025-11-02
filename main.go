@@ -48,6 +48,12 @@ func main() {
 		log.Fatalf("Failed to get embedded static files: %v", err)
 	}
 	
+	// Cache index.html in memory for efficient serving
+	indexHTML, err := fs.ReadFile(staticFS, "index.html")
+	if err != nil {
+		log.Fatalf("Failed to read index.html from embedded files: %v", err)
+	}
+	
 	// Serve assets directory from embedded filesystem
 	assetsFS, err := fs.Sub(staticFS, "assets")
 	if err != nil {
@@ -120,12 +126,7 @@ func main() {
 	// Serve the Vue.js SPA for all other routes
 	// This enables client-side routing for the frontend
 	router.NoRoute(func(c *gin.Context) {
-		// Read index.html from embedded filesystem
-		indexHTML, err := fs.ReadFile(staticFS, "index.html")
-		if err != nil {
-			c.String(http.StatusInternalServerError, "Failed to read index.html")
-			return
-		}
+		// Serve cached index.html
 		c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
 	})
 
