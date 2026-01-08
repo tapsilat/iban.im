@@ -21,6 +21,6 @@
     "autoprefixer": "^10.4.23",
     "postcss": "^8.4.47",
     "tailwindcss": "^4.1.18",
-    "vite": "^7.3.0"
+    "vite": "^7.3.1"
   }
 }
