@@ -9,7 +9,7 @@
     "preview": "vite preview --port 4881"
   },
   "dependencies": {
-    "axios": "^1.13.2",
+    "axios": "^1.13.3",
     "tesseract.js": "^7.0.0",
     "vue": "^3.5.27",
     "vue-router": "^4.6.4",
