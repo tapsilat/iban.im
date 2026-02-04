@@ -1322,13 +1322,12 @@ unplugin-utils@^0.3.0, unplugin-utils@^0.3.1:
     pathe "^2.0.3"
     picomatch "^4.0.3"
 
-unplugin@^2.3.11:
-  version "2.3.11"
-  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-2.3.11.tgz#411e020dd2ba90e2fbe1e7bd63a5a399e6ee3b54"
-  integrity sha512-5uKD0nqiYVzlmCRs01Fhs2BdkEgBS3SAVP6ndrBsuK42iC2+JHyxM05Rm9G8+5mkmRtzMZGY8Ct5+mliZxU/Ww==
+unplugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-3.0.0.tgz#01e40c474bf74d363744f4cb262569d26dd9bb43"
+  integrity sha512-0Mqk3AT2TZCXWKdcoaufeXNukv2mTrEZExeXlHIOZXdqYoHHr4n51pymnwV8x2BOVxwXbK2HLlI7usrqMpycdg==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
-    acorn "^8.15.0"
     picomatch "^4.0.3"
     webpack-virtual-modules "^0.6.2"
 
@@ -1354,10 +1353,10 @@ vite@^7.3.1:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vue-router@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-5.0.1.tgz#e19675c81f7cfdd8e3495c809e4a14610b0b822e"
-  integrity sha512-t+lFugGXMdaq8lbn+vXG4j2H9UlsP205Tszz1wcDk9FyxqItBzcdJQ06IhpkQ2mHOfiTOHZeBshkskzPzHJkCw==
+vue-router@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-5.0.2.tgz#34e4ebb10069fc44e15570eddd9baabba942e07b"
+  integrity sha512-YFhwaE5c5JcJpNB1arpkl4/GnO32wiUWRB+OEj1T0DlDxEZoOfbltl2xEwktNU/9o1sGcGburIXSpbLpPFe/6w==
   dependencies:
     "@babel/generator" "^7.28.6"
     "@vue-macros/common" "^3.1.1"
@@ -1373,7 +1372,7 @@ vue-router@^5.0.1:
     picomatch "^4.0.3"
     scule "^1.3.0"
     tinyglobby "^0.2.15"
-    unplugin "^2.3.11"
+    unplugin "^3.0.0"
     unplugin-utils "^0.3.1"
     yaml "^2.8.2"
 
