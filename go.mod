@@ -7,7 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2
-	github.com/graph-gophers/graphql-go v1.8.0
+	github.com/graph-gophers/graphql-go v1.9.0
 	github.com/mununki/gqlmerge v0.2.17
 	golang.org/x/crypto v0.48.0
 	gorm.io/driver/mysql v1.6.0
