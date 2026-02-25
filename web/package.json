@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^1.13.5",
     "tesseract.js": "^7.0.0",
-    "vue": "^3.5.28",
+    "vue": "^3.5.29",
     "vue-router": "^5.0.3",
     "vuex": "^4.1.0"
   },
