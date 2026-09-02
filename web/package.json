@@ -12,7 +12,7 @@
     "axios": "^1.19.0",
     "tesseract.js": "^7.0.0",
     "vue": "^3.5.41",
-    "vue-router": "^5.2.0",
+    "vue-router": "^5.3.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
