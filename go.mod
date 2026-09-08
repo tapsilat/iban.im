@@ -1,6 +1,6 @@
 module github.com/tapsilat/iban.im
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/appleboy/gin-jwt/v2 v2.10.3
@@ -9,7 +9,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/graph-gophers/graphql-go v1.10.2
 	github.com/mununki/gqlmerge v0.2.17
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/driver/postgres v1.6.2
 	gorm.io/gorm v1.31.2
