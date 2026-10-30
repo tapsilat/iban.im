@@ -18,7 +18,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "@vitejs/plugin-vue": "^6.0.10",
-    "autoprefixer": "^10.6.1",
+    "autoprefixer": "^10.6.2",
     "postcss": "^8.5.30",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.5"
